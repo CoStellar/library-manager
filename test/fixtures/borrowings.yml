@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  borrow_date: 2023-12-14
+  due_date: 2023-12-14
+  returned: false
+  renewal_request: false
+
+two:
+  borrow_date: 2023-12-14
+  due_date: 2023-12-14
+  returned: false
+  renewal_request: false
