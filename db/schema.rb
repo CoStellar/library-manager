@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_14_120354) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_14_133211) do # rubocop:disable Metrics/BlockLength
   create_table "books", force: :cascade do |t|
     t.string "title"
     t.string "author"
@@ -42,6 +42,18 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_14_120354) do
     t.index ["book_id"], name: "index_copies_on_book_id"
   end
 
+  create_table "reservations", force: :cascade do |t|
+    t.date "reservation_date"
+    t.boolean "notification_sent"
+    t.boolean "reservation_completed"
+    t.integer "user_id", null: false
+    t.integer "book_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["book_id"], name: "index_reservations_on_book_id"
+    t.index ["user_id"], name: "index_reservations_on_user_id"
+  end
+
   create_table "reviews", force: :cascade do |t|
     t.integer "rating"
     t.integer "user_id", null: false
@@ -66,6 +78,8 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_14_120354) do
   add_foreign_key "borrowings", "copies"
   add_foreign_key "borrowings", "users"
   add_foreign_key "copies", "books"
+  add_foreign_key "reservations", "books"
+  add_foreign_key "reservations", "users"
   add_foreign_key "reviews", "books"
   add_foreign_key "reviews", "users"
 end
