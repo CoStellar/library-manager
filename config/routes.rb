@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  root 'main#index'
-
-  get '/main', to: 'main#index'
+  root 'panel#index'
+  devise_for :users
 end

@@ -1,7 +1,13 @@
-# frozen_string_literal: true
+class User < ApplicationRecord
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable
+  enum role: [:użytkownik, :moderator, :admin]
+  after_initialize :set_default_role, :if => :new_record?
+  def set_default_role
+    self.role ||= :użytkownik 
+  end
 
-class User < ApplicationRecord # rubocop:disable Style/Documentation
-  has_many :reservations
-  has_many :reviews
-  has_many :borrowings
+
 end
