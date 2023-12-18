@@ -1,13 +1,24 @@
-<h1>Panel#index</h1>
-<p>Find me in app/views/panel/index.html.erb</p>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>W3.CSS Template</title>
+<style>
+body {font-family: "Lato", sans-serif}
+.mySlides {display: none}
+</style>
+</head>
+<body>
+
+<!-- End Page Content -->
+<div class="login">
 <% if current_user %>
     <p>Hello <%= current_user.username %>!</p>
     <p>
         You have succesfully logged in as a <%= current_user.role%>
     </p>
     
-    <% if current_user.admin?%>
+    <% if current_user.Admin?%>
         There are <%= User.count %> users.
     <% end %>
 
@@ -20,3 +31,22 @@
     <br/>
     <%= link_to "Login", new_user_session_path %>
 <% end %>
+</div>
+
+
+<!-- Footer -->
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
