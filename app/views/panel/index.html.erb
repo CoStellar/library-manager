@@ -1,52 +1,33 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
-<title>W3.CSS Template</title>
-<style>
-body {font-family: "Lato", sans-serif}
-.mySlides {display: none}
-</style>
+  <title>Strona logowania</title>
+  <style>
+    body { font-family: "Lato", sans-serif; }
+    .mySlides { display: none; }
+  </style>
 </head>
 <body>
 
-<!-- End Page Content -->
 <div class="login">
-<% if current_user %>
-    <p>Hello <%= current_user.username %>!</p>
-    <p>
-        You have succesfully logged in as a <%= current_user.role%>
-    </p>
-    
-    <% if current_user.Admin?%>
-        There are <%= User.count %> users.
-    <% end %>
-
-    <%= link_to "Sign out", destroy_user_session_path, 'data-turbo-method': :delete %>
-<% else %>
-    <p>
-        You are not signed in
-    </p>
-    <%= link_to "Sign Up!", new_user_registration_path %>
-    <br/>
-    <%= link_to "Login", new_user_session_path %>
-<% end %>
+  <% if current_user %>
+    <p>Witaj <%= current_user.username %>!</p>
+      <% if current_user.approved =="true" %>
+      <p>Zalogowałeś się pomyślnie jako <%= current_user.role %>.</p>
+        <% if current_user.role != "Użytkownik" %>
+          <p>Liczba zarejestrowanych użytkowników: <%= User.count %></p>
+          <%= render "forms/approve_form", users: @users %>
+        <% end %>
+      <% else %>
+        <p>Twoje konto nie zostało jeszcze zatwierdzone</p>
+      <% end %>
+    <%= link_to "Wyloguj", destroy_user_session_path, 'data-turbo-method': :delete %>
+  <% else %>
+    <p>Nie jesteś zalogowany</p>
+    <%= link_to "Zarejestruj się!", new_user_registration_path %><br/>
+    <%= link_to "Zaloguj", new_user_session_path %>
+  <% end %>
 </div>
-
-
-<!-- Footer -->
-
-
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-

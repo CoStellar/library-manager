@@ -75,4 +75,8 @@ group :test do
   gem 'selenium-webdriver'
 end
 
+group :assets do
+  gem 'jquery-rails'
+end
+
 gem "devise", "~> 4.9"
