@@ -1,0 +1,42 @@
+<h2>Edytuj <%= resource_name.to_s.humanize %> - <%= @user.first_name %></h2>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+  <%= render "devise/shared/error_messages", resource: resource %>
+
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :approved %><br />
+    <%= f.check_box :approved %>
+  </div>
+
+  <% unless current_user.role != "Użytkownik" %>
+    <div class="field">
+      <%= f.label :password %> <i>(pozostaw puste, jeśli nie chcesz go zmieniać)</i><br />
+      <%= f.password_field :password, autocomplete: "new-password" %>
+      <% if @minimum_password_length %>
+        <br />
+        <em><%= @minimum_password_length %> znaków minimum</em>
+      <% end %>
+    </div>
+
+    <div class="field">
+      <%= f.label :password_confirmation %><br />
+      <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+    </div>
+  <% end %>
+<%= render "devise/shared/error_messages", resource: resource %>
+  <div class="actions">
+    <%= f.submit "Zaktualizuj" %>
+  </div>
+<% end %>
+
+
+<h3>Anuluj moje konto</h3>
+
+<div> Nie jesteś zadowolony/a? <%= button_to "Anuluj moje konto", registration_path(resource_name), data: { confirm: "Czy na pewno?", turbo_confirm: "Czy na pewno?" }, method: :delete %></div>
+
+<%= link_to "Wróć", :back %>

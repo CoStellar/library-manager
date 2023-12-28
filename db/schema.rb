@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_14_133211) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_26_194045) do
+  create_table "assignments", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "role_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["role_id"], name: "index_assignments_on_role_id"
+    t.index ["user_id"], name: "index_assignments_on_user_id"
+  end
+
   create_table "books", force: :cascade do |t|
     t.string "title"
     t.string "author"
@@ -64,17 +73,32 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_14_133211) do
     t.index ["user_id"], name: "index_reviews_on_user_id"
   end
 
-  create_table "users", force: :cascade do |t|
-    t.string "username"
-    t.string "password"
-    t.string "email"
-    t.string "first_name"
-    t.string "last_name"
-    t.string "role"
+  create_table "roles", force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer "role", default: 0, null: false
+    t.string "username", null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "approved", default: false, null: false
+    t.index ["approved"], name: "index_users_on_approved"
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  add_foreign_key "assignments", "roles"
+  add_foreign_key "assignments", "users"
   add_foreign_key "borrowings", "copies"
   add_foreign_key "borrowings", "users"
   add_foreign_key "copies", "books"
