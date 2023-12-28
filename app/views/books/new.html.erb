@@ -32,22 +32,6 @@
       <div><%= message %></div>
     <% end %>
   </div>
-  
-  <div>
-    <%= form.label :availablecopies %><br>
-    <%= form.number_field :availablecopies %>
-    <% @book.errors.full_messages_for(:availablecopies).each do |message| %>
-      <div><%= message %></div>
-    <% end %>
-  </div>
-
-  <div>
-    <%= form.label :totalcopies %><br>
-    <%= form.number_field :totalcopies %>
-    <% @book.errors.full_messages_for(:totalcopies).each do |message| %>
-      <div><%= message %></div>
-    <% end %>
-  </div>
 
   <div>
     <%= form.submit %>

@@ -10,4 +10,5 @@ Rails.application.routes.draw do
   get '/books' , to: 'books#index', as: 'list'
   get '/books/:id' , to: 'books#show'
   get '/books/new', to: 'books#new', as: 'newbook'
+  get '/search' , to: 'books#search'
 end

@@ -1,0 +1,20 @@
+<% if @results.length != 0 %>
+
+<h1>Wyniki wyszukiwania:</h1>
+<ul>
+  <% @results.each do |result| %>
+    <li>
+     <a href="/books/<%= result.id %>">
+        <%= result.title %>
+      </a>
+    </li>
+  <% end %>
+</ul>
+<% else %>
+<h1>Wyniki wyszukiwania:</h1>
+<p>Nie znaleziono żadnych książek!</p>
+<% end %>
+
+
+<p><%= link_to "Lista książek", list_path %></p>
+<p><%= link_to "Strona główna", welcome_path %></p>
