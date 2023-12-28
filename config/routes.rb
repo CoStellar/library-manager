@@ -3,5 +3,11 @@
 Rails.application.routes.draw do
   root 'main#index'
 
-  get '/main', to: 'main#index'
+  get '/main', to: 'main#index' , as: 'welcome'
+
+  resources :books
+
+  get '/books' , to: 'books#index', as: 'list'
+  get '/books/:id' , to: 'books#show'
+  get '/books/new', to: 'books#new', as: 'newbook'
 end
