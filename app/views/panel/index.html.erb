@@ -10,22 +10,32 @@
 <body>
 
 <div class="login">
+
+  <%= button_to "Powrót do satrony głównej", root_path, :method => :get %><br/>
+
   <% if current_user %>
     <p>Witaj <%= current_user.username %>!</p>
       <% if current_user.approved =="true" %>
-      <p>Zalogowałeś się pomyślnie jako <%= current_user.role %>.</p>
+
+        <p>Zalogowałeś się pomyślnie jako <%= current_user.role %>.</p><br/>
+
+
         <% if current_user.role != "Użytkownik" %>
           <p>Liczba zarejestrowanych użytkowników: <%= User.count %></p>
           <%= render "forms/approve_form", users: @users %>
         <% end %>
+
       <% else %>
         <p>Twoje konto nie zostało jeszcze zatwierdzone</p>
       <% end %>
+
+
+
     <%= link_to "Wyloguj", destroy_user_session_path, 'data-turbo-method': :delete %>
   <% else %>
     <p>Nie jesteś zalogowany</p>
-    <%= link_to "Zarejestruj się!", new_user_registration_path %><br/>
-    <%= link_to "Zaloguj", new_user_session_path %>
+    <%= button_to "Zarejestruj się!", new_user_registration_path %><br/>
+    <%= button_to "Zaloguj", new_user_session_path %>
   <% end %>
 </div>
 

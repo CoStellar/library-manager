@@ -11,6 +11,12 @@ body {font-family: "Lato", sans-serif}
 </head>
 <body>
   <h1>Witamy w bibliotece!</h1>
- <p><%= link_to "Lista książek", list_path %></p>
-
+    <% if current_user %>
+      <%= button_to "Panel użytkownika", panel_path, :method => :get %><br/>
+      <%= button_to "Lista książek", list_path, :method => :get %><br/>
+      <%= link_to "Wyloguj", destroy_user_session_path, 'data-turbo-method': :delete %>
+    <% else %>
+      <%= button_to "Zarejestruj się!", new_user_registration_path , :method => :get %><br/>
+      <%= button_to "Zaloguj", new_user_session_path %><br/>
+    <% end %>
 </body>

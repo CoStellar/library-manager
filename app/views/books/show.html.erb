@@ -14,7 +14,7 @@ body {
 <ul>Liczba wszytskich kopii: <%= @book.totalcopies%></ul>
 <ul>Liczba dostępnych kopii: <%= @book.availablecopies%></ul>
 
-<p><%= link_to "Lista książek", list_path %></p>
-<p><%= link_to "Strona główna", welcome_path %></p>
+<p><%= button_to "Lista książek", list_path, :method => :get %></p>
+<p><%= button_to "Strona główna", root_path, :method => :get %></p>
 
 </body>

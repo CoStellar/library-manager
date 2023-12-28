@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  root 'panel#index'
-  get '/main', to: 'main#index' , as: 'welcome'
+  root 'main#index'
+  get 'panel', to: 'panel#index' , as: 'panel'
+
   devise_for :users, controllers: { registrations: 'users/registrations' }
 
 

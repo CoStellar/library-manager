@@ -1,26 +1,29 @@
 <html>
 <head>
 <style>
-body {
+  body {
   background-color: #E6E6FA;
-}
+  }
 </style>
 </head>
 <body>
+  <%= button_to "Powrót do strony głównej", root_path, :method => :get %><br/>
 
-    <h1>Książki:</h1>
-<ul>
-  <% @books.each do |book| %>
-    <li>
-     <a href="/books/<%= book.id %>">
-        <%= book.title %>
-      </a>
-    </li>
+  <% if current_user.role != "Użytkownik" %>
+    <%= button_to "Dodaj książkę", newbook_path, :method => :get %>
   <% end %>
-</ul>
+  <h1>Książki:</h1>
+  <ul>
+    <% @books.each do |book| %>
+      <li>
+        <a href="/books/<%= book.id %>">
+          <%= book.title %>
+        </a>
+      </li>
+   <% end %>
+  </ul>
 
- <p><%= link_to "Strona główna", welcome_path %></p>
- <%= link_to "Dodaj książkę", newbook_path %>
 
+  
 </body>
 

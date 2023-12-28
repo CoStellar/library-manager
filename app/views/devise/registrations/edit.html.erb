@@ -39,4 +39,4 @@
 
 <div> Nie jesteś zadowolony/a? <%= button_to "Anuluj moje konto", registration_path(resource_name), data: { confirm: "Czy na pewno?", turbo_confirm: "Czy na pewno?" }, method: :delete %></div>
 
-<%= link_to "Wróć", :back %>
+<%= button_to "Wróć", :back, :method => :get%>
