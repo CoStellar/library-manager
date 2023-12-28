@@ -1,2 +1,26 @@
-<h1>Books#index</h1>
-<p>Find me in app/views/books/index.html.erb</p>
+<html>
+<head>
+<style>
+body {
+  background-color: #E6E6FA;
+}
+</style>
+</head>
+<body>
+
+    <h1>Książki:</h1>
+<ul>
+  <% @books.each do |book| %>
+    <li>
+     <a href="/books/<%= book.id %>">
+        <%= book.title %>
+      </a>
+    </li>
+  <% end %>
+</ul>
+
+ <p><%= link_to "Strona główna", welcome_path %></p>
+ <%= link_to "Dodaj książkę", newbook_path %>
+
+</body>
+

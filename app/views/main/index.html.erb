@@ -10,13 +10,7 @@ body {font-family: "Lato", sans-serif}
 </head>
 </head>
 <body>
-<h1>Books</h1>
-<ul>
-  <% @books.each do |book| %>
-    <li>
-      <%= book.title %>
-    </li>
-  <% end %>
-</ul>
+  <h1>Witamy w bibliotece!</h1>
+ <p><%= link_to "Lista książek", list_path %></p>
 
 </body>
