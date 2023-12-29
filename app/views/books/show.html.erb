@@ -18,6 +18,7 @@ body {
 <ul>Autor: <%= @book.author%></ul>
 <ul>Gatunek: <%= @book.genre%></ul>
 <ul>Numer ISBN: <%= @book.isbn%></ul>
+<ul>Ilość kopii: <%= @book.copies.count %></ul>
 <ul>Opis tytułu:</ul>
 <div>
    <%= @book.description%>
@@ -30,20 +31,34 @@ body {
       </p>
   <% end %>
 <% end %>
+
+
+
+
 <% if @book.copies.any? %>
-  <h2>Kopie książki:</h2>
-  <% @book.copies.each do |copy| %>
-    <% if copy.persisted? %>
-      <p>
-        <strong>ID książki:</strong>
-        <%= copy.book_id %>
-      </p>
-      <p>
-        <strong>ID kopii:</strong>
-        <%= copy.id %>
-      </p>
+  <h1>Kopie książki:</h1>
+  <table style="border-collapse: separate; border-spacing: 10px;">
+    <thead>
+      <tr>
+        <th style="border-bottom: 2px solid black;">ID ksiązki</th>
+        <th style="border-bottom: 2px solid black;">ID kopii</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @book.copies.each do |copy|%>
+      <% if copy.persisted? %>
+        <tr>
+          <td style="border-bottom: 1px solid black;">
+            <%= copy.book_id %>
+          </td>
+          <td style="border-bottom: 1px solid black;">
+            <%= copy.id %>
+          </td>
+        </tr>
+      <% end %>
     <% end %>
-  <% end %>
+    </tbody>
+  </table>
 <% end %>
 
 
