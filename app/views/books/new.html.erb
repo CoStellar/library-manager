@@ -2,7 +2,7 @@
 
 <%= form_with model: @book do |form| %>
   <div>
-    <%= form.label :title %><br>
+    <%= form.label :title, "Tytuł" %><br>
     <%= form.text_field :title %>
     <% @book.errors.full_messages_for(:title).each do |message| %>
       <div><%= message %></div>
@@ -10,7 +10,7 @@
   </div>
 
   <div>
-    <%= form.label :author %><br>
+    <%= form.label :author, "Autor" %><br>
     <%= form.text_field :author %>
     <% @book.errors.full_messages_for(:author).each do |message| %>
       <div><%= message %></div>
@@ -18,7 +18,7 @@
   </div>
 
   <div>
-    <%= form.label :genre %><br>
+    <%= form.label :genre, "Gatunek" %><br>
     <%= form.text_field :genre %>
     <% @book.errors.full_messages_for(:genre).each do |message| %>
       <div><%= message %></div>
@@ -26,16 +26,35 @@
   </div>
 
   <div>
-    <%= form.label :isbn %><br>
+    <%= form.label :isbn, "ISBN" %><br>
     <%= form.text_field :isbn %>
     <% @book.errors.full_messages_for(:isbn).each do |message| %>
       <div><%= message %></div>
     <% end %>
   </div>
 
-  <div>
-    <%= form.submit %>
-  </div>
-<% end %>
 
-<p><%= link_to "Strona główna", welcome_path %></p>
+  
+  <div>
+    <%= form.label :available_copies, "Ilość dostępnych kopii" %><br>
+    <%= form.number_field :available_copies %>
+    <% @book.errors.full_messages_for(:available_copies).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.label :total_copies, "Ilość kopii" %><br>
+    <%= form.number_field :total_copies %>
+    <% @book.errors.full_messages_for(:total_copies).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+
+  <div>
+    <%= form.submit "Dodaj książkę" %>
+  </div><br/>
+<% end %>
+<%= button_to "Cofnij", list_path,  :method => :get %><br/>
+<%= button_to "Strona główna", root_path, :method => :get %>
