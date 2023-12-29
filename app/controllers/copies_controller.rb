@@ -1,16 +1,13 @@
 class CopiesController < ApplicationController
-    def create
-        @book = Book.find(params[:book_id])
-        @copy = @book.copies.create(copy_params)
-        redirect_to book_path(@book)
+  def create
+    @book = Book.find(params[:book_id])
+    @copy = @book.copies.create
+    redirect_to book_path(@book)
+  end
 
-    end
-    
-    
-    private
-    def copy_params
-      params.require(:copy).permit(:id)
-    end
+  private
+
+  def copy_params
+    params.require(:copy).permit(:copy_number)
+  end
 end
-  
-  
