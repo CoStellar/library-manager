@@ -14,6 +14,36 @@ body {
 <ul>Liczba wszytskich kopii: <%= @book.total_copies%></ul>
 <ul>Liczba dostępnych kopii: <%= @book.available_copies%></ul>
 
+<h2>Kopie ksiązki:</h2>
+<% @book.copies.each do |copy| %>
+  <p>
+    <strong>ID książki:</strong>
+    <%= copy.book_id %>
+  </p>
+  <p>
+    <strong>ID kopii:</strong>
+    <%= copy.id %>
+  </p>
+<% end %>
+
+<% if current_user.role != "Użytkownik" %>
+
+        <h2>Dodaj kopię książki:</h2>
+    <%= form_with model: [ @book, @book.copies.build ] do |form| %>
+      <p>
+        <%= form.label :id, "ID kopii" %><br>
+        <%= form.number_field :id %>
+      </p>
+      <p>
+        <%= form.submit "Dodaj kopię" %>
+      </p>
+    <% end %>
+<% end %>
+
+
+
+  
+
 <p><%= button_to "Lista książek", list_path, :method => :get %></p>
 <p><%= button_to "Strona główna", root_path, :method => :get %></p>
 

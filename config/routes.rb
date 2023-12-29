@@ -22,7 +22,9 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :books
+  resources :books do
+    resources :copies
+  end
 
   get '/books' , to: 'books#index', as: 'list'
   get '/books/:id' , to: 'books#show'
