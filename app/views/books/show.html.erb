@@ -1,0 +1,20 @@
+<html>
+<head>
+<style>
+body {
+  background-color: #E6E6FA;
+}
+</style>
+</head>
+<body>
+<ul>Tytuł: <%= @book.title%></ul>
+<ul>Autor: <%= @book.author%></ul>
+<ul>Gatunek: <%= @book.genre%></ul>
+<ul>Numer ISBN: <%= @book.isbn%></ul>
+<ul>Liczba wszytskich kopii: <%= @book.total_copies%></ul>
+<ul>Liczba dostępnych kopii: <%= @book.available_copies%></ul>
+
+<p><%= button_to "Lista książek", list_path, :method => :get %></p>
+<p><%= button_to "Strona główna", root_path, :method => :get %></p>
+
+</body>

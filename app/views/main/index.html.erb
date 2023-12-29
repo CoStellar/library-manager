@@ -1,20 +1,22 @@
-
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+<title>W3.CSS Template</title>
 <style>
-body {
-  background-color: #E6E6FA;
-}
+  background-color: #E6E6FA
+body {font-family: "Lato", sans-serif}
+.mySlides {display: none}
 </style>
 </head>
+</head>
 <body>
-<h1>Books</h1>
-<ul>
-  <% @books.each do |book| %>
-    <li>
-      <%= book.title %>
-    </li>
-  <% end %>
-</ul>
-
+  <h1>Witamy w bibliotece!</h1>
+    <% if current_user %>
+      <%= button_to "Panel użytkownika", panel_path, :method => :get %><br/>
+      <%= button_to "Lista książek", list_path, :method => :get %><br/>
+      <%= link_to "Wyloguj", destroy_user_session_path, 'data-turbo-method': :delete %>
+    <% else %>
+      <%= button_to "Zarejestruj się!", new_user_registration_path , :method => :get %><br/>
+      <%= button_to "Zaloguj", new_user_session_path %><br/>
+    <% end %>
 </body>
