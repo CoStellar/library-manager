@@ -1,6 +1,7 @@
 class BooksController < ApplicationController
   def index
     @books = Book.all
+    @borrowed_books = current_user.borrowings.includes(:copy => :book).map(&:copy).uniq
   end
 
   def search
@@ -29,12 +30,13 @@ class BooksController < ApplicationController
     else
       render :new, status: :unprocessable_entity
     end
-  
   end
-  
   private
+
   def book_params
     params.require(:book).permit(:title, :author, :genre, :isbn, :description)
   end
+
+  
 end
 

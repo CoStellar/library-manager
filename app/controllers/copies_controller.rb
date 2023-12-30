@@ -5,6 +5,8 @@ class CopiesController < ApplicationController
     redirect_to book_path(@book)
   end
 
+
+  
   private
 
   def copy_params

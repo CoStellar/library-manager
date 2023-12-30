@@ -4,6 +4,22 @@
 body {
   background-color: #E6E6FA;
 }
+.red-box {
+  background: red;
+  background: var(--red-color, red);
+  height: 18px;
+  width: 90px;
+  color: orange; 
+  font-weight: bold; 
+}
+.green-box {
+  background: green;
+  background: var(--green-color, green);
+  height: 18px;
+  width: 70px;
+  color: yellow; 
+  font-weight: bold; 
+}
 </style>
 </head>
 <body>
@@ -41,6 +57,16 @@ body {
       <p>
         <strong>ID kopii:</strong>
         <%= copy.id %>
+      </p>
+      <p>
+        <strong>Dostępność:</strong>
+        <% if copy.borrowed %>
+          <div class="red-box"><center>Niedostępna</center></div>
+        <% else %>
+          <div class="green-box"><center>Dostępna</center></div>
+          <%=@book.id%>
+          <%= link_to "Wypożycz", borrow_path(book_id: @book.id, copy_id: copy.id) %>
+        <% end %>
       </p>
     <% end %>
   <% end %>

@@ -1,0 +1,73 @@
+<html>
+<head>
+<style>
+body {
+  background-color: #E6E6FA;
+}
+.button {
+  display:inline-block;
+    color:#444;
+    border:1px solid #CCC;
+    background:#DDD;
+    box-shadow: 0 0 5px -1px rgba(0,0,0,0.2);
+    cursor:pointer;
+    vertical-align:middle;
+    max-width: 100px;
+    padding: 5px;
+    text-align: center;
+}
+.button:active {
+    color:red;
+    box-shadow: 0 0 5px -1px rgba(0,0,0,0.6);
+}
+
+</style>
+</head>
+<body>
+<h2>Wypożycz książkę</h2>
+
+<%= form_with model: @borrowing, url: create_borrowing_path(book_id: @book.id, copy_id: @copy.id), method: :post do |form| %>
+  <%= form.hidden_field :copy_id, value: @copy.id %>
+    <h2>Książka:</h2>
+  <ul>Tytuł: <%= @book.title%></ul>
+  <ul>Autor: <%= @book.author%></ul>
+  <ul>Gatunek: <%= @book.genre%></ul>
+  <ul>Numer ISBN: <%= @book.isbn%></ul>
+  <ul>Opis tytułu:</ul>
+  <div>
+    <%= @book.description%>
+  </div>
+  <div>
+    <%= form.label :borrow_date, 'Data wypożyczenia' %>
+    <%= form.date_field :borrow_date, required: true, min: Date.today, max: (Date.today + 14.days), value: Date.today, id: 'borrow_date' %>
+  </div>
+  <br/>
+  <div>
+    <%= form.label :due_date, 'Data zwrotu' %>
+    <%= form.date_field :due_date, required: true, min: Date.today, max: (Date.today + 14.days), value: Date.today, id: 'due_date' %>
+  </div><br/>
+
+  <%= form.submit 'Wypożycz', form_class: 'form', class: 'button' %>
+<% end %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var borrowDateField = document.getElementById('borrow_date');
+    var dueDateField = document.getElementById('due_date');
+
+    borrowDateField.addEventListener('change', function() {
+      var selectedDate = new Date(borrowDateField.value);
+      var maxDueDate = new Date(selectedDate.getTime() + (14 * 24 * 60 * 60 * 1000)); // Dodaj 14 dni w milisekundach
+
+      dueDateField.setAttribute('min', borrowDateField.value);
+      dueDateField.setAttribute('max', maxDueDate.toISOString().split('T')[0]);
+
+      // Ustawienie daty zwrotu na datę wypożyczenia
+      dueDateField.value = borrowDateField.value;
+    });
+  });
+</script>
+<br>
+<div class="button"><center><a href="/books/<%= @book.id %>">Cofnij</a></center></div><br><br/>
+<%= button_to "Strona główna", root_path, :method => :get, form_class: 'form', class: 'button' %>
+</body>
