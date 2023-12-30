@@ -13,6 +13,17 @@ body {
 
 <p><%= button_to "Lista książek", list_path, :method => :get %></p>
 <p><%= button_to "Strona główna", root_path, :method => :get %></p>
+
+<% if current_user.role != "Użytkownik" %>
+   <p><%= button_to "Edytuj książkę", edit_book_path(@book), :method => :get %></p>
+    
+   <p> <form action="<%= show_path %>" method="post" data-turbo-method="delete" data-turbo-confirm="Czy jesteś pewien?">
+   <input type="hidden" name="_method" value="delete">
+   <input type="submit" value="Usuń książkę"></p>
+</form>
+
+<% end %>
+
 <h2>Książka:</h2>
 <ul>Tytuł: <%= @book.title%></ul>
 <ul>Autor: <%= @book.author%></ul>

@@ -31,6 +31,27 @@ class BooksController < ApplicationController
     end
   
   end
+
+  def edit
+    @book = Book.find(params[:id])
+  end
+
+  def update
+    @book = Book.find(params[:id])
+
+    if @book.update(book_params)
+      redirect_to @book
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @book = Book.find(params[:id])
+    @book.destroy
+
+    redirect_to list_path, status: :see_other
+  end
   
   private
   def book_params
