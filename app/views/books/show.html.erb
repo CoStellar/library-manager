@@ -4,6 +4,24 @@
 body {
   background-color: #E6E6FA;
 }
+a:link, a:visited
+ {
+  background-color: #a5f76a;
+  color: black;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+a:hover, a:active 
+{
+  color: black;
+  background-color: #f55546;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
 </style>
 </head>
 <body>
@@ -70,10 +88,14 @@ body {
             </td>
             <% if current_user.role != "Użytkownik" %> <!-- Dodanie warunku dla komórki akcji -->
               <td style="border-bottom: 1px solid black;">
-                <%= link_to "Usuń kopię", [copy.book, copy], data: {
+                <div>
+                  <%= link_to "Usuń kopię", [copy.book, copy], data: {
                   turbo_method: :delete,
                   turbo_confirm: "Are you sure?"
                 }  %>
+                </div>
+                
+
               </td>
             <% end %>
           </tr>
