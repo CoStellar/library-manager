@@ -51,26 +51,38 @@ body {
   <table style="border-collapse: separate; border-spacing: 10px;">
     <thead>
       <tr>
-        <th style="border-bottom: 2px solid black;">ID ksiązki</th>
+        <th style="border-bottom: 2px solid black;">ID książki</th>
         <th style="border-bottom: 2px solid black;">ID kopii</th>
+        <% if current_user.role != "Użytkownik" %> <!-- Dodanie warunku dla kolumny akcji -->
+          <th style="border-bottom: 2px solid black;">Akcja</th>
+        <% end %>
       </tr>
     </thead>
     <tbody>
-      <% @book.copies.each do |copy|%>
-      <% if copy.persisted? %>
-        <tr>
-          <td style="border-bottom: 1px solid black;">
-            <%= copy.book_id %>
-          </td>
-          <td style="border-bottom: 1px solid black;">
-            <%= copy.id %>
-          </td>
-        </tr>
+      <% @book.copies.each do |copy| %>
+        <% if copy.persisted? %>
+          <tr>
+            <td style="border-bottom: 1px solid black;">
+              <%= copy.book_id %>
+            </td>
+            <td style="border-bottom: 1px solid black;">
+              <%= copy.id %>
+            </td>
+            <% if current_user.role != "Użytkownik" %> <!-- Dodanie warunku dla komórki akcji -->
+              <td style="border-bottom: 1px solid black;">
+                <%= link_to "Usuń kopię", [copy.book, copy], data: {
+                  turbo_method: :delete,
+                  turbo_confirm: "Are you sure?"
+                }  %>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
       <% end %>
-    <% end %>
     </tbody>
   </table>
 <% end %>
+
 
 
 </body>

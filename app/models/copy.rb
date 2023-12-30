@@ -5,6 +5,8 @@ class Copy < ApplicationRecord
   before_validation :generate_id, on: :create
   before_create :check_max_copies
 
+  after_destroy :check_book_copies
+
   private
 
   def generate_id
@@ -23,4 +25,9 @@ class Copy < ApplicationRecord
       throw(:abort)
     end
   end
+
+  def check_book_copies
+    book.destroy if book.copies.empty?
+  end
+
 end
