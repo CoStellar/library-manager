@@ -25,8 +25,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_28_151242) do
     t.string "author"
     t.string "genre"
     t.string "isbn"
-    t.integer "available_copies", default: 0, null: false
-    t.integer "total_copies", default: 0, null: false
+    t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -46,6 +45,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_28_151242) do
 
   create_table "copies", force: :cascade do |t|
     t.integer "book_id", null: false
+    t.boolean "borrowed", null: false, default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["book_id"], name: "index_copies_on_book_id"

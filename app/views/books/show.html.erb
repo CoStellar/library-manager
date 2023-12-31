@@ -4,47 +4,107 @@
 body {
   background-color: #E6E6FA;
 }
+a:link, a:visited
+ {
+  background-color: #a5f76a;
+  color: black;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+a:hover, a:active 
+{
+  color: black;
+  background-color: #f55546;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
 </style>
 </head>
 <body>
-<ul>Tytuł: <%= @book.title%></ul>
-<ul>Autor: <%= @book.author%></ul>
-<ul>Gatunek: <%= @book.genre%></ul>
-<ul>Numer ISBN: <%= @book.isbn%></ul>
-<ul>Liczba wszytskich kopii: <%= @book.total_copies%></ul>
-<ul>Liczba dostępnych kopii: <%= @book.available_copies%></ul>
-
-<h2>Kopie ksiązki:</h2>
-<% @book.copies.each do |copy| %>
-  <p>
-    <strong>ID książki:</strong>
-    <%= copy.book_id %>
-  </p>
-  <p>
-    <strong>ID kopii:</strong>
-    <%= copy.id %>
-  </p>
-<% end %>
-
-<% if current_user.role != "Użytkownik" %>
-
-        <h2>Dodaj kopię książki:</h2>
-    <%= form_with model: [ @book, @book.copies.build ] do |form| %>
-      <p>
-        <%= form.label :id, "ID kopii" %><br>
-        <%= form.number_field :id %>
-      </p>
-      <p>
-        <%= form.submit "Dodaj kopię" %>
-      </p>
-    <% end %>
-<% end %>
-
-
+  
 
   
 
 <p><%= button_to "Lista książek", list_path, :method => :get %></p>
 <p><%= button_to "Strona główna", root_path, :method => :get %></p>
+
+<% if current_user.role != "Użytkownik" %>
+   <p><%= button_to "Edytuj książkę", edit_book_path(@book), :method => :get %></p>
+    
+   <p> <form action="<%= show_path %>" method="post" data-turbo-method="delete" data-turbo-confirm="Czy jesteś pewien?">
+   <input type="hidden" name="_method" value="delete">
+   <input type="submit" value="Usuń książkę"></p>
+</form>
+
+<% end %>
+
+<h2>Książka:</h2>
+<ul>Tytuł: <%= @book.title%></ul>
+<ul>Autor: <%= @book.author%></ul>
+<ul>Gatunek: <%= @book.genre%></ul>
+<ul>Numer ISBN: <%= @book.isbn%></ul>
+<ul>Ilość kopii: <%= @book.copies.count %></ul>
+<ul>Opis tytułu:</ul>
+<div>
+   <%= @book.description%>
+</div>
+<% if current_user.role != "Użytkownik" %>
+   <h2>Dodaj kopię książki:</h2>
+  <%= form_with model: [ @book, @book.copies.build ] do |form| %>
+      <p>
+        <%= form.submit "Dodaj kopię" %>
+      </p>
+  <% end %>
+<% end %>
+
+
+
+
+<% if @book.copies.any? %>
+  <h1>Kopie książki:</h1>
+  <table style="border-collapse: separate; border-spacing: 10px;">
+    <thead>
+      <tr>
+        <th style="border-bottom: 2px solid black;">ID książki</th>
+        <th style="border-bottom: 2px solid black;">ID kopii</th>
+        <% if current_user.role != "Użytkownik" %> <!-- Dodanie warunku dla kolumny akcji -->
+          <th style="border-bottom: 2px solid black;">Akcja</th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% @book.copies.each do |copy| %>
+        <% if copy.persisted? %>
+          <tr>
+            <td style="border-bottom: 1px solid black;">
+              <%= copy.book_id %>
+            </td>
+            <td style="border-bottom: 1px solid black;">
+              <%= copy.id %>
+            </td>
+            <% if current_user.role != "Użytkownik" %> <!-- Dodanie warunku dla komórki akcji -->
+              <td style="border-bottom: 1px solid black;">
+                <div>
+                  <%= link_to "Usuń kopię", [copy.book, copy], data: {
+                  turbo_method: :delete,
+                  turbo_confirm: "Are you sure?"
+                }  %>
+                </div>
+                
+
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+
 
 </body>

@@ -1,15 +1,33 @@
 <% if @results.length != 0 %>
 
+
 <h1>Wyniki wyszukiwania:</h1>
-<ul>
-  <% @results.each do |result| %>
-    <li>
-     <a href="/books/<%= result.id %>">
-        <%= result.title %>
-      </a>
-    </li>
-  <% end %>
-</ul>
+<table style="border-collapse: separate; border-spacing: 10px;">
+  <thead>
+    <tr>
+      <th style="border-bottom: 2px solid black;">Tytuł</th>
+      <th style="border-bottom: 2px solid black;">Autor</th>
+      <th style="border-bottom: 2px solid black;">Gatunek</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @results.each do |result| %>
+      <tr>
+        <td style="border-bottom: 1px solid black;">
+          <a href="/books/<%= result.id %>">
+            <%= result.title %>
+          </a>
+        </td>
+        <td style="border-bottom: 1px solid black;">
+          <%= result.author %>
+        </td>
+        <td style="border-bottom: 1px solid black;">
+          <%= result.genre %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 <% else %>
 <h1>Wyniki wyszukiwania:</h1>
 <p>Nie znaleziono żadnych książek!</p>

@@ -8,5 +8,6 @@ class Book < ApplicationRecord # rubocop:disable Style/Documentation
   validates :title, presence: true
   validates :author, presence: true
   validates :genre, presence: true
-
+  validates :isbn, presence: true, uniqueness: true
+  validates :description, presence: true
 end
