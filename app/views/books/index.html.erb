@@ -40,8 +40,33 @@ a:hover, a:active {
 
   <% end %>
   <h1>Książki:</h1>
-  <ul>
+<table style="border-collapse: separate; border-spacing: 10px;">
+  <thead>
+    <tr>
+      <th style="border-bottom: 2px solid black;">Tytuł</th>
+      <th style="border-bottom: 2px solid black;">Autor</th>
+      <th style="border-bottom: 2px solid black;">Gatunek</th>
+    </tr>
+  </thead>
+  <tbody>
     <% @books.each do |book| %>
+      <tr>
+        <td style="border-bottom: 1px solid black;">
+          <a href="/books/<%= book.id %>">
+            <%= book.title %>
+          </a>
+        </td>
+        <td style="border-bottom: 1px solid black;">
+          <%= book.author %>
+        </td>
+        <td style="border-bottom: 1px solid black;">
+          <%= book.genre %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
       <li>
         <a href="/books/<%= book.id %>">
           <%= book.title %>
@@ -67,6 +92,7 @@ a:hover, a:active {
     <% end %>
   </ul>
 <% end %>
+
 
 </body>
 
