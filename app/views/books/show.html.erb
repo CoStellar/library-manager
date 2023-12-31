@@ -9,7 +9,7 @@ body {
   background: red;
   background: var(--red-color, red);
   height: 18px;
-  width: 90px;
+  width: 70px;
   color: orange; 
   font-weight: bold; 
 }
@@ -89,7 +89,9 @@ a:hover, a:active
       <tr>
         <th style="border-bottom: 2px solid black;">ID książki</th>
         <th style="border-bottom: 2px solid black;">ID kopii</th>
-        <% if current_user.role != "Użytkownik" %> <!-- Dodanie warunku dla kolumny akcji -->
+        <th style="border-bottom: 2px solid black;">Dostępność</th>
+        <th style="border-bottom: 2px solid black;">Wypożycz</th>
+                <% if current_user.role != "Użytkownik" %> <!-- Dodanie warunku dla kolumny akcji -->
           <th style="border-bottom: 2px solid black;">Akcja</th>
         <% end %>
       </tr>
@@ -104,13 +106,18 @@ a:hover, a:active
             <td style="border-bottom: 1px solid black;">
               <%= copy.id %>
             </td>
-            <strong>Dostępność:</strong>
+            <td style="border-bottom: 1px solid black;">
             <% if copy.borrowed %>
               <div class="red-box"><center>Niedostępna</center></div>
             <% else %>
               <div class="green-box"><center>Dostępna</center></div>
-              <%= link_to "Wypożycz", borrow_path(book_id: @book.id, copy_id: copy.id) %>
             <% end %>
+            </td>
+            <td style="border-bottom: 1px solid black;">
+              <% if !copy.borrowed %>
+                  <%= link_to "Wypożycz", borrow_path(book_id: @book.id, copy_id: copy.id) %>
+              <% end %>
+            </td>
             <% if current_user.role != "Użytkownik" %> <!-- Dodanie warunku dla komórki akcji -->
               <td style="border-bottom: 1px solid black;">
                 <div>

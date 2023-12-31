@@ -67,13 +67,7 @@ a:hover, a:active {
   </tbody>
 </table>
 
-      <li>
-        <a href="/books/<%= book.id %>">
-          <%= book.title %>
-        </a>
-      </li>
-   <% end %>
-  </ul>
+
 <% @borrowed_books.each do |copy| %>
   <h3><%= copy.book.title %></h3>
   <ul>
