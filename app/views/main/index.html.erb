@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>W3.CSS Template</title>
 <style>
   background-color: #E6E6FA
 body {font-family: "Lato", sans-serif}
@@ -13,7 +12,9 @@ body {font-family: "Lato", sans-serif}
   <h1>Witamy w bibliotece!</h1>
     <% if current_user %>
       <%= button_to "Panel użytkownika", panel_path, :method => :get %><br/>
-      <%= button_to "Lista książek", list_path, :method => :get %><br/>
+        <% if current_user.approved == "true" %>
+        <%= button_to "Lista książek", list_path, :method => :get %><br/>
+        <% end %>
       <%= link_to "Wyloguj", destroy_user_session_path, 'data-turbo-method': :delete %>
     <% else %>
       <%= button_to "Zarejestruj się!", new_user_registration_path , :method => :get %><br/>

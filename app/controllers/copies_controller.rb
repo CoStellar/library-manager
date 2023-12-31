@@ -5,6 +5,7 @@ class CopiesController < ApplicationController
     redirect_to book_path(@book)
   end
 
+
   def destroy
     #@book = Book.find(params[:book_id])
     #@copy = @book.copy.find(params[:copy_number])

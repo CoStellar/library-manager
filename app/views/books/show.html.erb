@@ -4,6 +4,24 @@
 body {
   background-color: #E6E6FA;
 }
+
+.red-box {
+  background: red;
+  background: var(--red-color, red);
+  height: 18px;
+  width: 90px;
+  color: orange; 
+  font-weight: bold; 
+}
+.green-box {
+  background: green;
+  background: var(--green-color, green);
+  height: 18px;
+  width: 70px;
+  color: yellow; 
+  font-weight: bold; 
+}
+
 a:link, a:visited
  {
   background-color: #a5f76a;
@@ -86,6 +104,13 @@ a:hover, a:active
             <td style="border-bottom: 1px solid black;">
               <%= copy.id %>
             </td>
+            <strong>Dostępność:</strong>
+            <% if copy.borrowed %>
+              <div class="red-box"><center>Niedostępna</center></div>
+            <% else %>
+              <div class="green-box"><center>Dostępna</center></div>
+              <%= link_to "Wypożycz", borrow_path(book_id: @book.id, copy_id: copy.id) %>
+            <% end %>
             <% if current_user.role != "Użytkownik" %> <!-- Dodanie warunku dla komórki akcji -->
               <td style="border-bottom: 1px solid black;">
                 <div>
@@ -94,8 +119,6 @@ a:hover, a:active
                   turbo_confirm: "Are you sure?"
                 }  %>
                 </div>
-                
-
               </td>
             <% end %>
           </tr>
@@ -103,6 +126,7 @@ a:hover, a:active
       <% end %>
     </tbody>
   </table>
+
 <% end %>
 
 
