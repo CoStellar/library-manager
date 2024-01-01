@@ -49,5 +49,18 @@ Rails.application.routes.draw do
   get '/borrow' , to: 'borrowings#borrow', as: 'borrow'
   post '/borrow', to: 'borrowings#create', as: 'create_borrowing'
   get '/return' , to: 'borrowings#return', as: 'return'
+
+
+  resources :reservations, only: [:index, :create, :destroy]
+  #get '/reservations/new'
+  #get '/reservations/create'
+  get '/user_reservations', to: 'reservations#user_reservations', as: 'user_reservations'
+  post '/books/:book_id/reserve', to: 'reservations#create', as: 'reserve_book'
+  delete '/reservations/:id', to: 'reservations#destroy', as: 'cancel_reservation'
+
+
+
+ 
+
 end
 

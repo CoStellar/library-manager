@@ -2,7 +2,7 @@
 
 class Copy < ApplicationRecord
   belongs_to :book
-  has_many :borrowings
+  has_many :borrowings, dependent: :destroy
   before_validation :generate_id, on: :create
   before_create :check_max_copies
 

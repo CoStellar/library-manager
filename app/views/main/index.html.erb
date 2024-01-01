@@ -14,6 +14,7 @@ body {font-family: "Lato", sans-serif}
       <%= button_to "Panel użytkownika", panel_path, :method => :get %><br/>
         <% if current_user.approved == "true" %>
         <%= button_to "Lista książek", list_path, :method => :get %><br/>
+        <%= button_to "Twoje rezerwacje", user_reservations_path, :method => :get %><br/>
         <% end %>
       <%= link_to "Wyloguj", destroy_user_session_path, 'data-turbo-method': :delete %>
     <% else %>

@@ -6,6 +6,7 @@ class BorrowingsController < ApplicationController
     @copy = Copy.find(params[:copy_id])
     @borrowing = Borrowing.new
   end
+
   def return_book
     puts 'Zaczynamy akcję return_book!'
     @copy = Copy.find(params[:copy_id])
@@ -34,13 +35,17 @@ class BorrowingsController < ApplicationController
       render :new
     end
   end
+
   def borrowed_books
     @borrowed_books = current_user.borrowings.includes(:copy => :book).map(&:copy).uniq
   end
+
   private
+
   def borrowing_params
     params.require(:borrowing).permit(:copy_id, :borrow_date, :due_date)
   end
+  
   def set_users_and_borrowed_books
     @users_and_borrowed_books = User.includes(borrowings: { copy: :book }).all
   end
