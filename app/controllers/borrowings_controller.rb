@@ -8,18 +8,15 @@ class BorrowingsController < ApplicationController
   end
 
   def return_book
-    puts 'Zaczynamy akcję return_book!'
     @copy = Copy.find(params[:copy_id])
-
-    if @copy.update(borrowed: false)
-      borrowing = Borrowing.find_by(copy_id: @copy.id)
+    ActiveRecord::Base.transaction do
+      @copy.update(borrowed: false)
+      borrowing = Borrowing.where(copy_id: @copy.id, returned: false).first
       borrowing.update(returned: true)
-
-      flash[:notice] = 'Książka została zwrócona.'
-    else
-      flash[:alert] = 'Błąd podczas zwracania książki.'
     end
-    puts 'Akcja return_book zakończona!'
+      flash[:notice] = 'Książka została zwrócona.'
+      @copy.book.check_reservations
+
     redirect_to list_path
   end
 
@@ -39,6 +36,7 @@ class BorrowingsController < ApplicationController
   def borrowed_books
     @borrowed_books = current_user.borrowings.includes(:copy => :book).map(&:copy).uniq
   end
+
 
   private
 

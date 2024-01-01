@@ -2,6 +2,7 @@ class CopiesController < ApplicationController
   def create
     @book = Book.find(params[:book_id])
     @copy = @book.copies.create
+    @copy.book.check_reservations
     redirect_to book_path(@book)
   end
 

@@ -60,12 +60,13 @@ a:hover, a:active
 
 
   <% if @book.copies.all?(&:borrowed) && !@book.copies.joins(:borrowings).exists?(borrowings: { returned: false, user_id: current_user.id })%>
-    <% if !current_user.reservations.exists?(book_id: @book.id) %>
+    <% if !current_user.reservations.exists?(book_id: @book.id, reservation_completed: false) %>
       <%= form_with(model: @reservation, url: reserve_book_path(@book)) do |form| %>
       <%= form.hidden_field :book_id, value: @book.id %>
       <%= form.submit "Zarezerwuj książkę" %>
     <% end %>
-    <% elsif %>
+    <% end %>
+    <% if current_user.reservations.exists?(book_id: @book.id, reservation_completed: false)%>
     <%= form_with(model: @reservation, url: cancel_reservation_path(@book.reservations.find_by(user_id: current_user.id)),
      method: :delete, 
      data: { turbo_confirm: "Are you sure?" }) do |form| %>
