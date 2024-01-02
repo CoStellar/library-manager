@@ -59,7 +59,11 @@
 
   <p><%= button_to "Lista książek", list_path, :method => :get %></p>
   <p><%= button_to "Strona główna", root_path, :method => :get %></p>
-
+<% if flash[:alert] %>
+  <div class="alert alert-danger">
+    <%= flash[:alert] %>
+  </div>
+<% end %>
   <h2>Twoje wypożyczenia</h2>
 
   <div class="borrowed-section">

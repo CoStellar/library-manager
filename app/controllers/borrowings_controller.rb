@@ -17,20 +17,25 @@ class BorrowingsController < ApplicationController
 
       flash[:notice] = 'Książka została zwrócona.'
       @copy.book.check_reservations
-      redirect_to list_path
+      redirect_to return_path
   end
 
   def create
-    @borrowing = Borrowing.new(borrowing_params)
-    @borrowing.user_id = current_user.id
-    @borrowing.returned = false
-    @borrowing.renewal_request = false
-    @borrowing.copy.update(borrowed: true)
-    if @borrowing.save
-      redirect_to list_path, notice: 'Książka wypożyczona.'
+    if current_user.borrowings.where(returned: false).count >= 5
+      redirect_to list_path, alert: 'Przekroczyłeś limit wypożyczonych książek.'
     else
-      render :new
+      @borrowing = Borrowing.new(borrowing_params)
+      @borrowing.user_id = current_user.id
+      @borrowing.returned = false
+      @borrowing.renewal_request = false
+      @borrowing.copy.update(borrowed: true)
+      if @borrowing.save
+        redirect_to list_path, notice: 'Książka wypożyczona.'
+      else
+        render :new
     end
+  end
+
   end
 
   def update

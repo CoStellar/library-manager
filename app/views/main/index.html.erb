@@ -7,10 +7,42 @@ body {font-family: "Lato", sans-serif}
 .mySlides {display: none}
 </style>
 </head>
-</head>
 <body>
   <h1>Witamy w bibliotece!</h1>
+  <% if flash[:alert] %>
+  <div class="alert alert-danger">
+    <%= flash[:alert] %>
+  </div>
+<% end %>
     <% if current_user %>
+      <% if @upcoming_due_dates.any? %>
+        <div class="upcoming-due-dates">
+          <h3>Zbliżające się terminy oddania:</h3>
+          <ul>
+            <% @upcoming_due_dates.each do |copy_id, borrowings| %>
+              <li>
+                <strong>ID Kopii: <%= copy_id %></strong>
+                <br>
+                <ul>
+                  <% borrowings.each do |borrowing| %>
+                    <li>
+                      Data do zwrotu: <%= borrowing.due_date %>
+                      <br>
+                      <% if (borrowing.due_date - Date.today).to_i > 0 %>
+                        Dni pozostałe: <%= (borrowing.due_date - Date.today).to_i %>
+                      <% else %>
+                        Należność za zwłokę z oddaniem: <%= (borrowing.due_date - Date.today).to_i * 10 *(-1) %>
+                      <% end %>
+                    </li>
+                  <% end %>
+                </ul>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      
       <%= button_to "Panel użytkownika", panel_path, :method => :get %><br/>
         <% if current_user.approved == "true" %>
         <%= button_to "Lista książek", list_path, :method => :get %><br/>
