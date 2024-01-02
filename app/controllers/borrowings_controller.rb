@@ -40,12 +40,15 @@ class BorrowingsController < ApplicationController
 
   def update
     @borrowing = Borrowing.find(params[:id])
-  
-    if @borrowing.update(update_borrowing_params)
-      redirect_to list_path, notice: 'Pomyślnie zaktualizowano wypożyczenie.'
+    if @borrowing.due_date < Date.today
+      if @borrowing.update(update_borrowing_params)
+        redirect_to list_path, notice: 'Pomyślnie zaktualizowano wypożyczenie.'
+      else
+        flash[:alert] = 'Błąd podczas aktualizacji wypożyczenia.'
+        redirect_to list_path
+      end
     else
-      flash[:alert] = 'Błąd podczas aktualizacji wypożyczenia.'
-      redirect_to list_path
+      redirect_to list_path, alert: 'Czas na przedłużenie minął.'
     end
   end
 
