@@ -14,10 +14,10 @@ class BorrowingsController < ApplicationController
       borrowing = Borrowing.where(copy_id: @copy.id, returned: false).first
       borrowing.update(returned: true)
     end
+
       flash[:notice] = 'Książka została zwrócona.'
       @copy.book.check_reservations
-
-    redirect_to list_path
+      redirect_to list_path
   end
 
   def create
@@ -33,12 +33,28 @@ class BorrowingsController < ApplicationController
     end
   end
 
+  def update
+    @borrowing = Borrowing.find(params[:id])
+  
+    if @borrowing.update(update_borrowing_params)
+      redirect_to list_path, notice: 'Pomyślnie zaktualizowano wypożyczenie.'
+    else
+      flash[:alert] = 'Błąd podczas aktualizacji wypożyczenia.'
+      redirect_to list_path
+    end
+  end
+
   def borrowed_books
-    @borrowed_books = current_user.borrowings.includes(:copy => :book).map(&:copy).uniq
+    @borrowed_books = current_user.borrowings.includes(:copy => :book).where(returned: false).map(&:book).uniq
   end
 
 
   private
+
+  def update_borrowing_params
+    params.require(:borrowing).permit(:due_date, :renewal_request)
+  end
+
 
   def borrowing_params
     params.require(:borrowing).permit(:copy_id, :borrow_date, :due_date)
