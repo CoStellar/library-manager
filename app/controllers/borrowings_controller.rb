@@ -44,9 +44,6 @@ class BorrowingsController < ApplicationController
     end
   end
 
-  def borrowed_books
-    @borrowed_books = current_user.borrowings.includes(:copy => :book).where(returned: false).map(&:book).uniq
-  end
 
 
   private

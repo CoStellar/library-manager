@@ -33,8 +33,9 @@ a:hover, a:active {
     :title => nil%>
 	</div>
 </div>
-<% end %>
 
+<% end %>
+ <%= button_to "Moje wypożyczenia", user_borrowing_path, :method => :get %>
   <% if current_user.role != "Użytkownik" %>
     <%= button_to "Dodaj książkę", newbook_path, :method => :get %>
 
@@ -67,36 +68,6 @@ a:hover, a:active {
   </tbody>
 </table>
 
-
-<% @borrowed_books.each do |copy| %>
-  <h3><%= copy.book.title %></h3>
-  <ul>
-    <% copy.borrowings.each do |borrowing| %>
-      <li>
-        <strong>Tytuł: <%= borrowing.copy.book.title %></strong>
-        <br>
-        <strong>ID: <%= borrowing.copy.id %></strong>
-        <br>
-        Data wypożyczenia: <%= borrowing.borrow_date %>
-        <br>
-        Data do zwrotu: <%= borrowing.due_date %>
-        <br>
-        Zwrócona: <%= borrowing.returned ? 'Tak' : 'Nie' %>
-        <br>
-       <% if !borrowing.returned && !borrowing.renewal_request? %>
-          <%= form_with(model: [@book, @copy, borrowing], local: true) do |form| %>
-            <%= form.hidden_field :renewal_request, value: 'true' %>
-            <%= form.label :due_date, "Nowa data zwrotu" %>
-            <%= form.date_field :due_date, required: true, min: borrowing.due_date + 1.day, max: (borrowing.due_date + 14.days), value: borrowing.due_date + 1.day, id: 'due_date' %>
-            <div>
-              <%= form.submit "Przedłuż wypożyczenie", data: { turbo_stream_frame: 'reload', turbo_confirm: 'Czy na pewno chcesz przedłużyć wypożyczenie?' }%>
-            </div><br/> 
-          <% end %>
-        <% end %>
-      </li>
-    <% end %>
-  </ul>
-<% end %>
 
 <% if flash[:alert].present? %>
   <div class="alert alert-danger">

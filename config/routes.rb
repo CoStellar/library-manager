@@ -62,6 +62,7 @@ Rails.application.routes.draw do
   get '/user_reservations', to: 'reservations#user_reservations', as: 'user_reservations'
   post '/books/:book_id/reserve', to: 'reservations#create', as: 'reserve_book'
   delete '/reservations/:id', to: 'reservations#destroy', as: 'cancel_reservation'
+  get '/user_borrowing', to: 'panel#user_borrowing', as: 'user_borrowing'
 
 
 end
