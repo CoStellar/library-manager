@@ -8,7 +8,7 @@ class PanelController < ApplicationController
   end
 
     def user_borrowing
-      @borrowed_books = current_user.borrowings.includes(:copy => :book).where(returned: false).map(&:copy).uniq
+      @borrowed_books = current_user.borrowings
     end
   
   

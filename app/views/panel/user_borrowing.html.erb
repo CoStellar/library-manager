@@ -1,81 +1,121 @@
 <html>
 <head>
-<style>
-body {
-  background-color: #E6E6FA;
-}
+  <style>
+    body {
+      background-color: #E6E6FA;
+    }
 
-.red-box {
-  background: red;
-  background: var(--red-color, red);
-  height: 18px;
-  width: 70px;
-  color: orange; 
-  font-weight: bold; 
-}
-.green-box {
-  background: green;
-  background: var(--green-color, green);
-  height: 18px;
-  width: 70px;
-  color: yellow; 
-  font-weight: bold; 
-}
+    .red-box {
+      background: red;
+      background: var(--red-color, red);
+      height: 18px;
+      width: 70px;
+      color: orange; 
+      font-weight: bold; 
+    }
 
-a:link, a:visited
- {
-  background-color: #a5f76a;
-  color: black;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-}
+    .green-box {
+      background: green;
+      background: var(--green-color, green);
+      height: 18px;
+      width: 70px;
+      color: yellow; 
+      font-weight: bold; 
+    }
 
-a:hover, a:active 
-{
-  color: black;
-  background-color: #f55546;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-}
+    a:link, a:visited {
+      background-color: #a5f76a;
+      color: black;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+    }
 
-</style>
+    a:hover, a:active {
+      color: black;
+      background-color: #f55546;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .borrowed-section,
+    .returned-section {
+      width: 50%;
+      box-sizing: border-box; /* Zapobiega dodawaniu paddingu i bordera do szerokości */
+      float: left;
+    }
+
+    .borrowed-section {
+      padding: 10px;
+    }
+
+    .returned-section {
+      padding: 10px;
+    }
+  </style>
 </head>
 <body>
 
+  <p><%= button_to "Lista książek", list_path, :method => :get %></p>
+  <p><%= button_to "Strona główna", root_path, :method => :get %></p>
 
-<% @borrowed_books.each do |copy| %>
-  <h3><%= copy.book.title %></h3>
-  <ul>
-    <% copy.borrowings.each do |borrowing| %>
-      <li>
-        <strong>Tytuł: <%= borrowing.copy.book.title %></strong>
-        <br>
-        <strong>ID: <%= borrowing.copy.id %></strong>
-        <br>
-        Data wypożyczenia: <%= borrowing.borrow_date %>
-        <br>
-        Data do zwrotu: <%= borrowing.due_date %>
-        <br>
-        Zwrócona: <%= borrowing.returned ? 'Tak' : 'Nie' %>
-        <br>
-       <% if !borrowing.returned && !borrowing.renewal_request? %>
-          <%= form_with(model: [@book, @copy, borrowing], local: true) do |form| %>
-            <%= form.hidden_field :renewal_request, value: 'true' %>
-            <%= form.label :due_date, "Nowa data zwrotu" %>
-            <%= form.date_field :due_date, required: true, min: borrowing.due_date + 1.day, max: (borrowing.due_date + 14.days), value: borrowing.due_date + 1.day, id: 'due_date' %>
-            <div>
-              <%= form.submit "Przedłuż wypożyczenie", data: { turbo_stream_frame: 'reload', turbo_confirm: 'Czy na pewno chcesz przedłużyć wypożyczenie?' }%>
-            </div><br/> 
-          <% end %>
+  <h2>Twoje wypożyczenia</h2>
+
+  <div class="borrowed-section">
+    <h3>Wypożyczone:</h3>
+    <% @borrowed_books.select { |borrowing| !borrowing.returned }.group_by { |b| b.copy.book.title }.each do |title, borrowings| %>
+      <h4><%= title %>:</h4>
+      <ul>
+        <% borrowings.each do |borrowing| %>
+          <li>
+            <strong>Tytuł: <%= borrowing.copy.book.title %></strong>
+            <br>
+            <strong>ID: <%= borrowing.copy.id %></strong>
+            <br>
+            Data wypożyczenia: <%= borrowing.borrow_date %>
+            <br>
+            Data do zwrotu: <%= borrowing.due_date %>
+            <br>
+            Zwrócona: <%= borrowing.returned ? 'Tak' : 'Nie' %>
+            <br>
+            <% if !borrowing.returned && !borrowing.renewal_request? %>
+              <%= form_with(model: [@book, @copy, borrowing], local: true) do |form| %>
+                <%= form.hidden_field :renewal_request, value: 'true' %>
+                <%= form.label :due_date, "Nowa data zwrotu" %>
+                <%= form.date_field :due_date, required: true, min: borrowing.due_date + 1.day, max: (borrowing.due_date + 14.days), value: borrowing.due_date + 1.day, id: 'due_date' %>
+                <div>
+                  <%= form.submit "Przedłuż wypożyczenie", data: { turbo_stream_frame: 'reload', turbo_confirm: 'Czy na pewno chcesz przedłużyć wypożyczenie?' }%>
+                </div><br/> 
+              <% end %>
+            <% end %>
+          </li>
         <% end %>
-      </li>
+      </ul>
     <% end %>
-  </ul>
-<% end %>
+  </div>
 
-<p><%= button_to "Lista książek", list_path, :method => :get %></p>
-<p><%= button_to "Strona główna", root_path, :method => :get %></p>
+  <div class="returned-section">
+    <h3>Zwrócone:</h3>
+    <% @borrowed_books.select { |borrowing| borrowing.returned }.group_by { |b| b.copy.book.title }.each do |title, borrowings| %>
+      <h4><%= title %>:</h4>
+      <ul>
+        <% borrowings.each do |borrowing| %>
+          <li>
+            <strong>Tytuł: <%= borrowing.copy.book.title %></strong>
+            <br>
+            <strong>ID: <%= borrowing.copy.id %></strong>
+            <br>
+            Data wypożyczenia: <%= borrowing.borrow_date %>
+            <br>
+            Data do zwrotu: <%= borrowing.due_date %>
+            <br>
+            Zwrócona: <%= borrowing.returned ? 'Tak' : 'Nie' %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
 
 </body>
+</html>
