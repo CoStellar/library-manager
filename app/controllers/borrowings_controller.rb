@@ -6,6 +6,7 @@ class BorrowingsController < ApplicationController
     @copy = Copy.find(params[:copy_id])
     @borrowing = Borrowing.new
   end
+
   def return_book
     @copy = Copy.find(params[:copy_id])
     ActiveRecord::Base.transaction do
@@ -13,8 +14,10 @@ class BorrowingsController < ApplicationController
       borrowing = Borrowing.where(copy_id: @copy.id, returned: false).first
       borrowing.update(returned: true)
     end
-    flash[:notice] = 'Książka została zwrócona.'
-    redirect_to list_path
+
+      flash[:notice] = 'Książka została zwrócona.'
+      @copy.book.check_reservations
+      redirect_to list_path
   end
 
   def create
@@ -29,6 +32,7 @@ class BorrowingsController < ApplicationController
       render :new
     end
   end
+
   def update
     @borrowing = Borrowing.find(params[:id])
   
@@ -39,11 +43,11 @@ class BorrowingsController < ApplicationController
       redirect_to list_path
     end
   end
-  
+
   def borrowed_books
     @borrowed_books = current_user.borrowings.includes(:copy => :book).where(returned: false).map(&:book).uniq
   end
-  
+
 
   private
 
@@ -51,9 +55,11 @@ class BorrowingsController < ApplicationController
     params.require(:borrowing).permit(:due_date, :renewal_request)
   end
 
+
   def borrowing_params
     params.require(:borrowing).permit(:copy_id, :borrow_date, :due_date)
   end
+  
   def set_users_and_borrowed_books
     @users_and_borrowed_books = User.includes(borrowings: { copy: :book }).all
   end

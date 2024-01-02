@@ -1,0 +1,72 @@
+<html>
+<head>
+<style>
+body {
+  background-color: #E6E6FA;
+}
+
+.red-box {
+  background: red;
+  background: var(--red-color, red);
+  height: 18px;
+  width: 70px;
+  color: orange; 
+  font-weight: bold; 
+}
+.green-box {
+  background: green;
+  background: var(--green-color, green);
+  height: 18px;
+  width: 70px;
+  color: yellow; 
+  font-weight: bold; 
+}
+
+a:link, a:visited
+ {
+  background-color: #a5f76a;
+  color: black;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+a:hover, a:active 
+{
+  color: black;
+  background-color: #f55546;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+</style>
+</head>
+<body>
+
+<% if @user_reservations.any? %>
+  <h1>Twoje rezerwacje:</h1>
+  <ul>
+    <% @user_reservations.each do |reservation| %>
+      <li>
+        <strong>Tytuł książki:</strong> <%= reservation.book.title %><br>
+        <strong>Data rezerwacji:</strong> <%= reservation.reservation_date %><br>
+        <strong>Wysłano powiadomienie:</strong> <%= reservation.notification_sent ? 'Tak' : 'Nie' %><br>
+        <strong>Skompletowano rezerwację:</strong> <%= reservation.reservation_completed ? 'Tak' : 'Nie' %><br>
+        <% if !reservation.reservation_completed %>
+            <%= link_to "Anuluj rezerwację", cancel_reservation_path(reservation), data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure?"
+                  }  %> 
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>Nie posiadasz żadnych rezerwacji!</p>
+<% end %>
+
+<p><%= button_to "Lista książek", list_path, :method => :get %></p>
+<p><%= button_to "Strona główna", root_path, :method => :get %></p>
+
+</body>
