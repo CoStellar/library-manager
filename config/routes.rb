@@ -21,8 +21,13 @@ Rails.application.routes.draw do
   end
 
   resources :borrowings do
-    put :return_book, on: :member
+    member do
+      put 'return_book' 
+      patch 'extend_due_date'
+      patch 'update'
+    end
   end
+  
   namespace :users do
     resource :registrations, only: [:edit, :update] do
       member do
@@ -38,7 +43,11 @@ Rails.application.routes.draw do
       get 'copy_params'
     end
   end
-
+  resources :books do
+    resources :copies do
+      resources :borrowings
+    end
+  end
 
 
   put '/return_book/:id', to: 'borrowings#return', as: :return_book
@@ -49,5 +58,10 @@ Rails.application.routes.draw do
   get '/borrow' , to: 'borrowings#borrow', as: 'borrow'
   post '/borrow', to: 'borrowings#create', as: 'create_borrowing'
   get '/return' , to: 'borrowings#return', as: 'return'
+  get '/update' , to: 'borrowings#update', as: 'update'
+
+
+
+
 end
 

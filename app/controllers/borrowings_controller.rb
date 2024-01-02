@@ -7,18 +7,13 @@ class BorrowingsController < ApplicationController
     @borrowing = Borrowing.new
   end
   def return_book
-    puts 'Zaczynamy akcję return_book!'
     @copy = Copy.find(params[:copy_id])
-
-    if @copy.update(borrowed: false)
-      borrowing = Borrowing.find_by(copy_id: @copy.id)
+    ActiveRecord::Base.transaction do
+      @copy.update(borrowed: false)
+      borrowing = Borrowing.where(copy_id: @copy.id, returned: false).first
       borrowing.update(returned: true)
-
-      flash[:notice] = 'Książka została zwrócona.'
-    else
-      flash[:alert] = 'Błąd podczas zwracania książki.'
     end
-    puts 'Akcja return_book zakończona!'
+    flash[:notice] = 'Książka została zwrócona.'
     redirect_to list_path
   end
 
@@ -34,10 +29,28 @@ class BorrowingsController < ApplicationController
       render :new
     end
   end
-  def borrowed_books
-    @borrowed_books = current_user.borrowings.includes(:copy => :book).map(&:copy).uniq
+  def update
+    @borrowing = Borrowing.find(params[:id])
+  
+    if @borrowing.update(update_borrowing_params)
+      redirect_to list_path, notice: 'Pomyślnie zaktualizowano wypożyczenie.'
+    else
+      flash[:alert] = 'Błąd podczas aktualizacji wypożyczenia.'
+      redirect_to list_path
+    end
   end
+  
+  def borrowed_books
+    @borrowed_books = current_user.borrowings.includes(:copy => :book).where(returned: false).map(&:book).uniq
+  end
+  
+
   private
+
+  def update_borrowing_params
+    params.require(:borrowing).permit(:due_date, :renewal_request)
+  end
+
   def borrowing_params
     params.require(:borrowing).permit(:copy_id, :borrow_date, :due_date)
   end
