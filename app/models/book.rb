@@ -39,4 +39,8 @@ class Book < ApplicationRecord # rubocop:disable Style/Documentation
       end
     end
   end
+
+  def average_rating
+    reviews.average(:rating).to_f
+  end
 end

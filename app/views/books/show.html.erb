@@ -58,22 +58,47 @@ a:hover, a:active
 </form>
 <% end %>
 
+<% if @book.copies.all?(&:borrowed) && !@book.copies.joins(:borrowings).exists?(borrowings: { returned: false, user_id: current_user.id })%>
+  <% if !current_user.reservations.exists?(book_id: @book.id, reservation_completed: false) %>
+    <%= form_with(model: @reservation, url: reserve_book_path(@book)) do |form| %>
+    <%= form.hidden_field :book_id, value: @book.id %>
+    <%= form.submit "Zarezerwuj książkę" %>
+  <% end %>
+  <% end %>
+  <% if current_user.reservations.exists?(book_id: @book.id, reservation_completed: false)%>
+  <%= form_with(model: @reservation, url: cancel_reservation_path(@book.reservations.find_by(user_id: current_user.id)),
+    method: :delete, 
+    data: { turbo_confirm: "Czy jesteś pewien?" }) do |form| %>
+  <%= form.submit "Anuluj rezerwację" %>
+  <% end %>
+  <% end %>
+<% end %>
 
-  <% if @book.copies.all?(&:borrowed) && !@book.copies.joins(:borrowings).exists?(borrowings: { returned: false, user_id: current_user.id })%>
-    <% if !current_user.reservations.exists?(book_id: @book.id, reservation_completed: false) %>
-      <%= form_with(model: @reservation, url: reserve_book_path(@book)) do |form| %>
-      <%= form.hidden_field :book_id, value: @book.id %>
-      <%= form.submit "Zarezerwuj książkę" %>
-    <% end %>
-    <% end %>
-    <% if current_user.reservations.exists?(book_id: @book.id, reservation_completed: false)%>
-    <%= form_with(model: @reservation, url: cancel_reservation_path(@book.reservations.find_by(user_id: current_user.id)),
-     method: :delete, 
-     data: { turbo_confirm: "Are you sure?" }) do |form| %>
-    <%= form.submit "Anuluj rezerwację" %>
-    <% end %>
+
+<% if current_user.borrowings.exists?(copy_id: @book.copies.ids, returned: true) %>
+  <% if !current_user.reviews.exists?(book_id: @book.id) %>
+  <h2>Dodaj recenzję:</h2>
+  <%= form_with(model: [ @book, @book.reviews.build ], local: true) do |form| %>
+    <p>
+      <%= form.label :rating, 'Ocena (1-5):' %>
+      <%= form.select :rating, options_for_select((1..5).map { |num| [num, num] }) %>
+    </p>
+    <%= form.submit 'Oceń książkę' %>
     <% end %>
   <% end %>
+  <% if current_user.reviews.exists?(book_id: @book.id) %>
+  <% user_review = @book.reviews.find_by(user_id: current_user.id) %>
+  <p> Twoja ocena: <%= user_review.rating %> </p>
+  <%= form_with(model: @review, url: cancel_review_path(@book.reviews.find_by(user_id: current_user.id)),
+    method: :delete, 
+    data: { turbo_confirm: "Czy jesteś pewien?" }) do |form| %>
+  <%= form.submit "Usuń ocenę książki" %>
+  <% end %>
+  <% end %>
+<% end %>
+
+
+  
 
 
 
@@ -88,6 +113,15 @@ a:hover, a:active
 <div>
    <%= @book.description%>
 </div>
+
+
+<% if @book.average_rating.present? %>
+  <h1>Średnia ocena: <%= @book.average_rating %></h1>
+<% else %>
+  <h1>Brak recenzji</h1>
+<% end %>
+
+
 <% if current_user.role != "Użytkownik" %>
    <h2>Dodaj kopię książki:</h2>
   <%= form_with model: [ @book, @book.copies.build ] do |form| %>

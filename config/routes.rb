@@ -47,9 +47,13 @@ Rails.application.routes.draw do
     resources :copies do
       resources :borrowings
     end
+    resources :reviews, only: [:create, :destroy, :user_rating]
   end
 
+  delete '/reviews/:id', to: 'reviews#destroy', as: 'cancel_review'
 
+
+  
   put '/return_book/:id', to: 'borrowings#return', as: :return_book
   get '/books' , to: 'books#index', as: 'list'
   get '/books/:id' , to: 'books#show', as: 'show'
@@ -63,7 +67,8 @@ Rails.application.routes.draw do
   post '/books/:book_id/reserve', to: 'reservations#create', as: 'reserve_book'
   delete '/reservations/:id', to: 'reservations#destroy', as: 'cancel_reservation'
   get '/user_borrowing', to: 'panel#user_borrowing', as: 'user_borrowing'
-
+  
+    
 
 end
 
