@@ -1,4 +1,9 @@
 <% if users %>
+<% if flash[:alert] %>
+  <div class="alert alert-danger">
+    <%= flash[:alert] %>
+  </div>
+<% end %>
   <h2>Oczekujący na zaakceptowanie:</h2>
   <% users.each do |user| %>
     <% if user.approved.nil? || user.approved == "false" %>

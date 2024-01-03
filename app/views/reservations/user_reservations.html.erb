@@ -43,7 +43,11 @@ a:hover, a:active
 </style>
 </head>
 <body>
-
+<% if flash[:alert] %>
+  <div class="alert alert-danger">
+    <%= flash[:alert] %>
+  </div>
+<% end %>
 <% if @user_reservations.any? %>
   <h1>Twoje rezerwacje:</h1>
   <ul>

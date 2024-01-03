@@ -24,6 +24,11 @@ body {
 </style>
 </head>
 <body>
+  <% if flash[:alert] %>
+  <div class="alert alert-danger">
+    <%= flash[:alert] %>
+  </div>
+<% end %>
 <h2>Wypożycz książkę</h2>
 
 <%= form_with model: @borrowing, url: create_borrowing_path(book_id: @book.id, copy_id: @copy.id), method: :post do |form| %>

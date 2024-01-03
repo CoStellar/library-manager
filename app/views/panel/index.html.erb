@@ -8,7 +8,11 @@
   </style>
 </head>
 <body>
-
+<% if flash[:alert] %>
+  <div class="alert alert-danger">
+    <%= flash[:alert] %>
+  </div>
+<% end %>
 <div class="login">
 
   <%= button_to "Powrót do strony głównej", root_path, :method => :get %><br/>
