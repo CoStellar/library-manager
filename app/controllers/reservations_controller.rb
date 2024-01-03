@@ -35,7 +35,5 @@ class ReservationsController < ApplicationController
     end
   
     
-    #mailer
-    # Dodaj inne akcje w zależności od potrzeb
   end
   
