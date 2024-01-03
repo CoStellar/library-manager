@@ -1,25 +1,55 @@
-<h2>Zaloguj się</h2>
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <title>Witamy w bibliotece!</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= stylesheet_link_tag "application.css" %>
+</head>
+<body>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+<!-- Navbar -->
+<div class="top">
+  <div class="bar color-granat ">
+     <%= button_to "Strona główna", root_path, :method => :get, class: "bar-item button padding-large" %>
+    <% if current_user %>
+      <%= button_to "Panel użytkownika", panel_path, :method => :get, class: "bar-item button padding-large" %>
+      <% if current_user.approved == "true" %>
+        <%= button_to "Lista książek", list_path, :method => :get, class: "bar-item button padding-large " %>
+      <% end %>
+      <%= link_to "Wyloguj", destroy_user_session_path, 'data-turbo-method': :delete, class: "bar-item button padding-large right" %>
+    <% else %>
+      <%= button_to "Zarejestruj się!", new_user_registration_path, :method => :get, class: "bar-item button padding-large right" %>
+      <%= button_to "Zaloguj", new_user_session_path, class: "bar-item button padding-large right" %>
+    <% end %>
   </div>
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
+</div>
+<div class="content" style="max-width:2000px;margin-top:46px">
+    <div class="container content center" style="max-width:2000px;margin-top:46px"><h1><b>Zaloguj się</b></h1></div>
+  <div class="container content padding-large center" style="max-width:400px">
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <div class="field">
+        <%= f.label :email, "Adres email" %><br />
+        <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+      </div>
+      <div class="field">
+        <%= f.label :password, "Hasło" %><br />
+        <%= f.password_field :password, autocomplete: "current-password" %>
+      </div>
 
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
-    </div>
-  <% end %>
+      <% if devise_mapping.rememberable? %>
+        <div class="field">
+          <%= f.check_box :remember_me %>
+          <%= f.label :remember_me, "Zapamiętaj mnie" %>
+        </div>
+      <% end %>
 
-  <div class="actions">
-    <%= f.submit "Zaloguj się", data: {turbo: false} %>
+      <div class="actions">
+        <%= f.submit "Zaloguj się", data: {turbo: false}, class: "button margin-top" %>
+      </div>
+    <% end %>
   </div>
-<% end %>
- <%= button_to "Powrót do satrony głównej", root_path, :method => :get %><br/>
-<%= render "devise/shared/links" %>
+</div>
+</body>
+</html>
+

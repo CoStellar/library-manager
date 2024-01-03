@@ -1,19 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
-<style>
-  background-color: #E6E6FA
-body {font-family: "Lato", sans-serif}
-.mySlides {display: none}
-</style>
+  <title>Witamy w bibliotece!</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= stylesheet_link_tag "application.css" %>
 </head>
 <body>
-  <h1>Witamy w bibliotece!</h1>
-  <% if flash[:alert] %>
-  <div class="alert alert-danger">
-    <%= flash[:alert] %>
+
+<!-- Navbar -->
+<div class="top">
+  <div class="bar color-granat ">
+    <%= button_to "Strona główna", root_path, :method => :get, class: "bar-item button padding-large" %>
+    <% if current_user %>
+      <%= button_to "Panel użytkownika", panel_path, :method => :get, class: "bar-item button padding-large" %>
+      <% if current_user.approved == "true" %>
+        <%= button_to "Lista książek", list_path, :method => :get, class: "bar-item button padding-large " %>
+      <% end %>
+      <%= link_to "Wyloguj", destroy_user_session_path, 'data-turbo-method': :delete, class: "bar-item button padding-large right" %>
+    <% else %>
+      <%= button_to "Zarejestruj się!", new_user_registration_path, :method => :get, class: "bar-item button padding-large right" %>
+      <%= button_to "Zaloguj", new_user_session_path, class: "bar-item button padding-large right" %>
+    <% end %>
   </div>
-<% end %>
+</div>
+
+
+<!-- Page content -->
+<div class="content" style="max-width:2000px;margin-top:46px">
+  <!-- Welcome Section -->
+  <div class="container content center" style="max-width:2000px;margin-top:46px"><h1><b>Witamy w bibliotece</b></h1></div>
+  <!-- Banner -->
+  <div class="centered-image-container">
+    <%= image_tag("big_banner.png", alt: "Big Banner", class: "centered-image") %>
+  </div>
+
+  <div class="container content padding-large" style="max-width:800px">
+    <% if flash[:alert] %>
+      <div class="alert alert-danger">
+        <%= flash[:alert] %>
+      </div>
+    <% end %>
+
     <% if current_user %>
       <% if @upcoming_due_dates.any? %>
         <div class="upcoming-due-dates">
@@ -41,16 +69,9 @@ body {font-family: "Lato", sans-serif}
           </ul>
         </div>
       <% end %>
-
-      
-      <%= button_to "Panel użytkownika", panel_path, :method => :get %><br/>
-        <% if current_user.approved == "true" %>
-        <%= button_to "Lista książek", list_path, :method => :get %><br/>
-        <%= button_to "Twoje rezerwacje", user_reservations_path, :method => :get %><br/>
-        <% end %>
-      <%= link_to "Wyloguj", destroy_user_session_path, 'data-turbo-method': :delete %>
-    <% else %>
-      <%= button_to "Zarejestruj się!", new_user_registration_path , :method => :get %><br/>
-      <%= button_to "Zaloguj", new_user_session_path %><br/>
     <% end %>
+  </div>
+</div>
+
 </body>
+</html>

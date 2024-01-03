@@ -1,76 +1,61 @@
-<html>
+<!DOCTYPE html>
+<html lang="pl">
 <head>
-<style>
-body {
-  background-color: #E6E6FA;
-}
-
-.red-box {
-  background: red;
-  background: var(--red-color, red);
-  height: 18px;
-  width: 70px;
-  color: orange; 
-  font-weight: bold; 
-}
-.green-box {
-  background: green;
-  background: var(--green-color, green);
-  height: 18px;
-  width: 70px;
-  color: yellow; 
-  font-weight: bold; 
-}
-
-a:link, a:visited
- {
-  background-color: #a5f76a;
-  color: black;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-}
-
-a:hover, a:active 
-{
-  color: black;
-  background-color: #f55546;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-}
-
-</style>
+  <title>Witamy w bibliotece!</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= stylesheet_link_tag "application.css" %>
 </head>
 <body>
-<% if flash[:alert] %>
-  <div class="alert alert-danger">
-    <%= flash[:alert] %>
-  </div>
-<% end %>
-<% if @user_reservations.any? %>
-  <h1>Twoje rezerwacje:</h1>
-  <ul>
-    <% @user_reservations.each do |reservation| %>
-      <li>
-        <strong>Tytuł książki:</strong> <%= reservation.book.title %><br>
-        <strong>Data rezerwacji:</strong> <%= reservation.reservation_date %><br>
-        <strong>Wysłano powiadomienie:</strong> <%= reservation.notification_sent ? 'Tak' : 'Nie' %><br>
-        <strong>Skompletowano rezerwację:</strong> <%= reservation.reservation_completed ? 'Tak' : 'Nie' %><br>
-        <% if !reservation.reservation_completed %>
-            <%= link_to "Anuluj rezerwację", cancel_reservation_path(reservation), data: {
-                    turbo_method: :delete,
-                    turbo_confirm: "Are you sure?"
-                  }  %> 
-        <% end %>
-      </li>
-    <% end %>
-  </ul>
-<% else %>
-  <p>Nie posiadasz żadnych rezerwacji!</p>
-<% end %>
 
-<p><%= button_to "Lista książek", list_path, :method => :get %></p>
-<p><%= button_to "Strona główna", root_path, :method => :get %></p>
+<!-- Navbar -->
+<div class="top">
+  <div class="bar color-granat ">
+    <%= button_to "Strona główna", root_path, :method => :get, class: "bar-item button padding-large" %>
+    <% if current_user %>
+      <%= button_to "Panel użytkownika", panel_path, :method => :get, class: "bar-item button padding-large" %>
+      <% if current_user.approved == "true" %>
+        <%= button_to "Lista książek", list_path, :method => :get, class: "bar-item button padding-large " %>
+      <% end %>
+      <%= link_to "Wyloguj", destroy_user_session_path, 'data-turbo-method': :delete, class: "bar-item button padding-large right" %>
+    <% else %>
+      <%= button_to "Zarejestruj się!", new_user_registration_path, :method => :get, class: "bar-item button padding-large right" %>
+      <%= button_to "Zaloguj", new_user_session_path, class: "bar-item button padding-large right" %>
+    <% end %>
+  </div>
+</div>
+
+<div class="content" style="max-width:2000px;margin-top:46px">
+  <div class="container content padding-large" style="max-width:800px">
+    <% if flash[:alert] %>
+      <div class="alert alert-danger">
+        <%= flash[:alert] %>
+      </div>
+    <% end %>
+    <% if @user_reservations.any? %>
+<div class="container content center" style="max-width:2000px;margin-top:46px"><h1><b>Twoje rezerwacje</b></h1></div>
+
+      <ul>
+        <% @user_reservations.each do |reservation| %>
+          <li>
+            <strong>Tytuł książki:</strong> <%= reservation.book.title %><br>
+            <strong>Data rezerwacji:</strong> <%= reservation.reservation_date %><br>
+            <strong>Wysłano powiadomienie:</strong> <%= reservation.notification_sent ? 'Tak' : 'Nie' %><br>
+            <strong>Skompletowano rezerwację:</strong> <%= reservation.reservation_completed ? 'Tak' : 'Nie' %><br>
+            <% if !reservation.reservation_completed %>
+                <%= link_to "Anuluj rezerwację", cancel_reservation_path(reservation), data: {
+                        turbo_method: :delete,
+                        turbo_confirm: "Are you sure?"
+                      }, class: "button"  %> 
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p>Nie posiadasz żadnych rezerwacji!</p>
+    <% end %>
+  </div>
+</div>
 
 </body>
+</html>

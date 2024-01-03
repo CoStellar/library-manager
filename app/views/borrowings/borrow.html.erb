@@ -1,78 +1,81 @@
-<html>
+<!DOCTYPE html>
+<html lang="pl">
 <head>
-<style>
-body {
-  background-color: #E6E6FA;
-}
-.button {
-  display:inline-block;
-    color:#444;
-    border:1px solid #CCC;
-    background:#DDD;
-    box-shadow: 0 0 5px -1px rgba(0,0,0,0.2);
-    cursor:pointer;
-    vertical-align:middle;
-    max-width: 100px;
-    padding: 5px;
-    text-align: center;
-}
-.button:active {
-    color:red;
-    box-shadow: 0 0 5px -1px rgba(0,0,0,0.6);
-}
-
-</style>
+  <title>Witamy w bibliotece!</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= stylesheet_link_tag "application.css" %>
 </head>
 <body>
-  <% if flash[:alert] %>
-  <div class="alert alert-danger">
-    <%= flash[:alert] %>
+
+<!-- Navbar -->
+<div class="top">
+  <div class="bar color-granat ">
+     <%= button_to "Strona główna", root_path, :method => :get, class: "bar-item button padding-large" %>
+    <% if current_user %>
+      <%= button_to "Panel użytkownika", panel_path, :method => :get, class: "bar-item button padding-large" %>
+      <% if current_user.approved == "true" %>
+        <%= button_to "Lista książek", list_path, :method => :get, class: "bar-item button padding-large " %>
+        <a href="/books/<%= @book.id %>" class="bar-item button padding-large" >Cofnij</a>
+      <% end %>
+      <%= link_to "Wyloguj", destroy_user_session_path, 'data-turbo-method': :delete, class: "bar-item button padding-large right" %>
+    <% else %>
+      <%= button_to "Zarejestruj się!", new_user_registration_path, :method => :get, class: "bar-item button padding-large right" %>
+      <%= button_to "Zaloguj", new_user_session_path, class: "bar-item button padding-large right" %>
+    <% end %>
   </div>
-<% end %>
-<h2>Wypożycz książkę</h2>
+</div>
+<div class="content" style="max-width:2000px;margin-top:46px">
+  <div class="container content padding-large" style="max-width:800px">
+      <% if flash[:alert] %>
+      <div class="alert alert-danger">
+        <%= flash[:alert] %>
+      </div>
+    <% end %>
+       <div class="container content center" style="max-width:2000px;margin-top:46px"><h1><b>Wypożycz książkę</b></h1></div>
 
-<%= form_with model: @borrowing, url: create_borrowing_path(book_id: @book.id, copy_id: @copy.id), method: :post do |form| %>
-  <%= form.hidden_field :copy_id, value: @copy.id %>
-    <h2>Książka:</h2>
-  <ul>Tytuł: <%= @book.title%></ul>
-  <ul>Autor: <%= @book.author%></ul>
-  <ul>Gatunek: <%= @book.genre%></ul>
-  <ul>Numer ISBN: <%= @book.isbn%></ul>
-  <ul>Opis tytułu:</ul>
-  <div>
-    <%= @book.description%>
-  </div>
-  <div>
-    <%= form.label :borrow_date, 'Data wypożyczenia' %>
-    <%= form.date_field :borrow_date, required: true, min: Date.today, max: (Date.today + 14.days), value: Date.today, id: 'borrow_date' %>
-  </div>
-  <br/>
-  <div>
-    <%= form.label :due_date, 'Data zwrotu' %>
-    <%= form.date_field :due_date, required: true, min: Date.today, max: (Date.today + 14.days), value: Date.today, id: 'due_date' %>
-  </div><br/>
+      <%= form_with model: @borrowing, url: create_borrowing_path(book_id: @book.id, copy_id: @copy.id), method: :post do |form| %>
+        <%= form.hidden_field :copy_id, value: @copy.id %>
+          <h2 class = "bold" >Książka:</h2>
+        <ul><b>Tytuł:</b> <%= @book.title%></ul>
+        <ul><b>Autor:</b> <%= @book.author%></ul>
+        <ul><b>Gatunek:</b> <%= @book.genre%></ul>
+        <ul><b>Numer ISBN:</b> <%= @book.isbn%></ul>
+        <ul><b>Opis tytułu:</b></ul>
+        <div>
+          <%= @book.description%>
+        </div>
+        <div>
+          <%= form.label :borrow_date, 'Data wypożyczenia', class: "bold" %>
+          <%= form.date_field :borrow_date, required: true, min: Date.today, max: (Date.today + 14.days), value: Date.today, id: 'borrow_date' %>
+        </div>
+        <br/>
+        <div>
+          <%= form.label :due_date, 'Data zwrotu', class: "bold" %>
+          <%= form.date_field :due_date, required: true, min: Date.today, max: (Date.today + 14.days), value: Date.today, id: 'due_date' %>
+        </div><br/>
 
-  <%= form.submit 'Wypożycz', form_class: 'form', class: 'button' %>
-<% end %>
+        <%= form.submit 'Wypożycz', form_class: 'form', class: 'button' %>
+      <% end %>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    var borrowDateField = document.getElementById('borrow_date');
-    var dueDateField = document.getElementById('due_date');
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var borrowDateField = document.getElementById('borrow_date');
+        var dueDateField = document.getElementById('due_date');
 
-    borrowDateField.addEventListener('change', function() {
-      var selectedDate = new Date(borrowDateField.value);
-      var maxDueDate = new Date(selectedDate.getTime() + (14 * 24 * 60 * 60 * 1000)); // Dodaj 14 dni w milisekundach
+        borrowDateField.addEventListener('change', function() {
+          var selectedDate = new Date(borrowDateField.value);
+          var maxDueDate = new Date(selectedDate.getTime() + (14 * 24 * 60 * 60 * 1000)); // Dodaj 14 dni w milisekundach
 
-      dueDateField.setAttribute('min', borrowDateField.value);
-      dueDateField.setAttribute('max', maxDueDate.toISOString().split('T')[0]);
+          dueDateField.setAttribute('min', borrowDateField.value);
+          dueDateField.setAttribute('max', maxDueDate.toISOString().split('T')[0]);
 
-      // Ustawienie daty zwrotu na datę wypożyczenia
-      dueDateField.value = borrowDateField.value;
-    });
-  });
-</script>
-<br>
-<div class="button"><center><a href="/books/<%= @book.id %>">Cofnij</a></center></div><br><br/>
-<%= button_to "Strona główna", root_path, :method => :get, form_class: 'form', class: 'button' %>
+          // Ustawienie daty zwrotu na datę wypożyczenia
+          dueDateField.value = borrowDateField.value;
+        });
+      });
+    </script>
+    <br>
+
+
 </body>

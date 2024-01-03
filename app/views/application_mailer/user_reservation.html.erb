@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="pl">
 <head>
-  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  <title>Witamy w bibliotece!</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= stylesheet_link_tag "application.css" %>
 </head>
 <body>
+
   <h1>Twoja rezerwacja z dnia <%= @reservation_date %> została zrealizowana.</h1>
   <p>Wypożyczyłeś książkę <%= @book.title %>.</p>
   

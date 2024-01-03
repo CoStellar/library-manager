@@ -1,47 +1,53 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <title>Strona logowania</title>
-  <style>
-    body { font-family: "Lato", sans-serif; }
-    .mySlides { display: none; }
-  </style>
+  <title>Witamy w bibliotece!</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= stylesheet_link_tag "application.css" %>
 </head>
 <body>
-<% if flash[:alert] %>
-  <div class="alert alert-danger">
-    <%= flash[:alert] %>
-  </div>
-<% end %>
-<div class="login">
 
-  <%= button_to "Powrót do strony głównej", root_path, :method => :get %><br/>
-
-  <% if current_user %>
-    <p>Witaj <%= current_user.username %>!</p>
-      <% if current_user.approved =="true" %>
-
-        <p>Zalogowałeś się pomyślnie jako <%= current_user.role %>.</p><br/>
-
-
-        <% if current_user.role != "Użytkownik" %>
-          <p>Liczba zarejestrowanych użytkowników: <%= User.count %></p>
-          <%= render "forms/approve_form", users: @users %>
-        <% end %>
-
-      <% else %>
-        <p>Twoje konto nie zostało jeszcze zatwierdzone</p>
+<!-- Navbar -->
+<div class="top">
+  <div class="bar color-granat ">
+    <%= button_to "Strona główna", root_path, :method => :get, class: "bar-item button padding-large" %>
+    <% if current_user %>
+      <%= button_to "Panel użytkownika", panel_path, :method => :get, class: "bar-item button padding-large" %>
+      <% if current_user.approved == "true" %>
+        <%= button_to "Lista książek", list_path, :method => :get, class: "bar-item button padding-large " %>
       <% end %>
-
-
-
-    <%= link_to "Wyloguj", destroy_user_session_path, 'data-turbo-method': :delete %>
-  <% else %>
-    <p>Nie jesteś zalogowany</p>
-    <%= button_to "Zarejestruj się!", new_user_registration_path %><br/>
-    <%= button_to "Zaloguj", new_user_session_path %>
-  <% end %>
+      <%= link_to "Wyloguj", destroy_user_session_path, 'data-turbo-method': :delete, class: "bar-item button padding-large right" %>
+    <% else %>
+      <%= button_to "Zarejestruj się!", new_user_registration_path, :method => :get, class: "bar-item button padding-large right" %>
+      <%= button_to "Zaloguj", new_user_session_path, class: "bar-item button padding-large right" %>
+    <% end %>
+  </div>
 </div>
+<div class="content" style="max-width:2000px;margin-top:46px">
+  <% if flash[:alert] %>
+    <div class="alert alert-danger">
+      <%= flash[:alert] %>
+    </div>
+  <% end %>
 
+  <div class="container content padding-large" style="max-width:1000px">
+
+    <div class="login">
+      <% if current_user %>
+        <h2 class="bold">Witaj <%= current_user.username %>!</h2>
+          <% if current_user.approved == "true" %>
+            <p>Zalogowałeś/aś się pomyślnie jako <%= current_user.role %>.</p><br/>
+            <% if current_user.role != "Użytkownik" %>
+              <p>Liczba zarejestrowanych użytkowników: <%= User.count %></p>
+              <%= render "forms/approve_form", users: @users %>
+            <% end %>
+          <% else %>
+            <p>Twoje konto nie zostało jeszcze zatwierdzone</p>
+          <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
 </body>
 </html>

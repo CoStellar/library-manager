@@ -1,25 +1,56 @@
-<h2>Zmień swoje hasło</h2>
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <title>Witamy w bibliotece!</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= stylesheet_link_tag "application.css" %>
+</head>
+<body>
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-  <%= f.hidden_field :reset_password_token %>
-
-  <div class="field">
-    <%= f.label :password, "Nowe hasło" %><br />
-    <% if @minimum_password_length %>
-      <em>(<%= @minimum_password_length %> characters minimum)</em><br />
+<!-- Navbar -->
+<div class="top">
+  <div class="bar color-granat ">
+    <% if current_user %>
+      <%= button_to "Panel użytkownika", panel_path, :method => :get, class: "bar-item button padding-large" %>
+      <% if current_user.approved == "true" %>
+        <%= button_to "Lista książek", list_path, :method => :get, class: "bar-item button padding-large " %>
+      <% end %>
+      <%= link_to "Wyloguj", destroy_user_session_path, 'data-turbo-method': :delete, class: "bar-item button padding-large right" %>
+    <% else %>
+      <%= button_to "Zarejestruj się!", new_user_registration_path, :method => :get, class: "bar-item button padding-large right" %>
+      <%= button_to "Zaloguj", new_user_session_path, class: "bar-item button padding-large right" %>
     <% end %>
-    <%= f.password_field :password, autofocus: true, autocomplete: "new-password" %>
   </div>
+</div>
 
-  <div class="field">
-    <%= f.label :password_confirmation, "Potwierdź nowe hasło" %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+<div class="content" style="max-width:2000px;margin-top:46px">
+  <div class="container content padding-large" style="max-width:800px">
+    <h2>Zmień swoje hasło</h2>
+
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+      <%= f.hidden_field :reset_password_token %>
+
+      <div class="field">
+        <%= f.label :password, "Nowe hasło" %><br />
+        <% if @minimum_password_length %>
+          <em>(<%= @minimum_password_length %> characters minimum)</em><br />
+        <% end %>
+        <%= f.password_field :password, autofocus: true, autocomplete: "new-password" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :password_confirmation, "Potwierdź nowe hasło" %><br />
+        <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Zmień moje hasło", class: "button" %>
+      </div>
+    <% end %>
+
   </div>
-
-  <div class="actions">
-    <%= f.submit "Zmień moje hasło" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>
+</body>
+</html>

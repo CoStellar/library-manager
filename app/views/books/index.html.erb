@@ -1,78 +1,85 @@
-<html>
+<!DOCTYPE html>
+<html lang="pl">
 <head>
-<style>
-  body {
-  background-color: #E6E6FA;
-  }
-
-a:link, a:visited {
-  background-color: white;
-  color: black;
-  border: 2px solid green;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-}
-a:hover, a:active {
-  background-color: green;
-  color: white;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= stylesheet_link_tag "application.css" %>
 </head>
 <body>
-  <%= button_to "Powrót do strony głównej", root_path, :method => :get %><br/>
-  <% if current_user.role == "Bibliotekarz"%>
-  <%= button_to "Uzytkownicy wypożyczający", return_path, :method => :get %><br/>
-  <% end %>
-<%= form_tag(search_path, :method => "get") do %>
-<div class="input-group">
-	<%= search_field_tag :search, params[:search], placeholder: "Znajdź książkę ", class: "form-control" %>
-	<div class="input-group-btn">
-		<%= button_tag "Szukaj", :class => 'btn btn-info glyphicon glyphicon-search', 
-    :title => nil%>
-	</div>
+<!-- Navbar -->
+<div class="top">
+  <div class="bar color-granat ">
+     <%= button_to "Strona główna", root_path, :method => :get, class: "bar-item button padding-large" %>
+    <% if current_user %>
+      <%= button_to "Panel użytkownika", panel_path, :method => :get, class: "bar-item button padding-large" %>
+      <% if current_user.approved == "true" %>
+        <%= button_to "Moje wypożyczenia", user_borrowing_path, :method => :get, class: "bar-item button padding-large " %>
+        <%= button_to "Moje rezerwacje", user_reservations_path, :method => :get, class: "bar-item button padding-large " %>
+        <% if current_user.role != "Użytkownik" %>
+          <%= button_to "Dodaj książkę", newbook_path, :method => :get, class: "bar-item button padding-large " %>
+        <% end %> 
+        <% if current_user.role == "Bibliotekarz" %>
+        <%= button_to "Uzytkownicy wypożyczający", return_path, :method => :get, class: "bar-item button padding-large " %>
+        <% end %> 
+      <% end %>
+      <%= link_to "Wyloguj", destroy_user_session_path, 'data-turbo-method': :delete, class: "bar-item button padding-large right" %>
+    <% else %>
+      <%= button_to "Zarejestruj się!", new_user_registration_path, :method => :get, class: "bar-item button padding-large right" %>
+      <%= button_to "Zaloguj", new_user_session_path, class: "bar-item button padding-large right" %>
+    <% end %>
+  </div>
+</div>
+<div class="content" style="max-width:2000px;margin-top:46px">
+  <div class="container content center" style="max-width:2000px;margin-top:46px"><h1><b>Szukaj</b></h1></div>
+    
+    <div class="input-group center">
+      <%= form_tag(search_path, :method => "get") do %>
+        <%= search_field_tag :search, params[:search], placeholder: "Znajdź książkę ", class: "form-control" %>
+        <div class="margin-top">
+          <%= button_tag "Szukaj", :class => 'button', 
+          :title => nil%>
+        </div>
+      <% end %>
+    </div>
+    
+    <div class="container content padding-large" style="max-width:800px">  
+      <h1 class="bold" >Książki:</h1>
+      <table style="border-collapse: separate; border-spacing: 10px;">
+        <thead>
+          <tr>
+            <th style="border-bottom: 2px solid black;">Tytuł</th>
+            <th style="border-bottom: 2px solid black;">Autor</th>
+            <th style="border-bottom: 2px solid black;">Gatunek</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @books.each do |book| %>
+            <tr>
+              <td style="border-bottom: 1px solid black;">
+                <a href="/books/<%= book.id %>">
+                  <%= book.title %>
+                </a>
+              </td>
+              <td style="border-bottom: 1px solid black;">
+                <%= book.author %>
+              </td>
+              <td style="border-bottom: 1px solid black;">
+                <%= book.genre %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
 </div>
 
-<% end %>
- <%= button_to "Moje wypożyczenia", user_borrowing_path, :method => :get %>
-  <% if current_user.role != "Użytkownik" %>
-    <%= button_to "Dodaj książkę", newbook_path, :method => :get %>
-
+  <% if flash[:alert].present? %>
+    <div class="alert alert-danger">
+      <%= flash[:alert] %>
+    </div>
   <% end %>
-  <h1>Książki:</h1>
-<table style="border-collapse: separate; border-spacing: 10px;">
-  <thead>
-    <tr>
-      <th style="border-bottom: 2px solid black;">Tytuł</th>
-      <th style="border-bottom: 2px solid black;">Autor</th>
-      <th style="border-bottom: 2px solid black;">Gatunek</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @books.each do |book| %>
-      <tr>
-        <td style="border-bottom: 1px solid black;">
-          <a href="/books/<%= book.id %>">
-            <%= book.title %>
-          </a>
-        </td>
-        <td style="border-bottom: 1px solid black;">
-          <%= book.author %>
-        </td>
-        <td style="border-bottom: 1px solid black;">
-          <%= book.genre %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
 
-
-<% if flash[:alert].present? %>
-  <div class="alert alert-danger">
-    <%= flash[:alert] %>
-  </div>
-<% end %>
 </body>
 

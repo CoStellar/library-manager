@@ -1,15 +1,383 @@
-/*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
- * vendor/assets/stylesheets directory can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any other CSS
- * files in this directory. Styles in this file should be added after the last require_* statement.
- * It is generally better to create a new file per style scope.
- *
- *= require_tree .
- *= require_self
- */
+html {
+    box-sizing: border-box
+}
+
+body {
+    margin: 0;
+    background-color: #d1dbe6;
+}
+
+a {
+    background-color: transparent
+}
+
+a:active,
+a:hover {
+    outline-width: 0
+}
+
+b,
+strong {
+    font-weight: bolder
+}
+
+small {
+    font-size: 80%
+}
+
+figure {
+    margin: 1em 40px
+}
+
+img {
+    border-style: none
+}
+
+hr {
+    box-sizing: content-box;
+    height: 0;
+    overflow: visible
+}
+
+button,
+input,
+select,
+textarea,
+optgroup {
+    font: inherit;
+    margin: 0;
+}
+
+button,
+input {
+    overflow: visible
+}
+
+button,
+select {
+    text-transform: none;
+}
+
+textarea {
+    overflow: auto
+}
+
+html,
+body {
+    font-family: Verdana, sans-serif;
+    font-size: 15px;
+    line-height: 1.5
+}
+
+html {
+    overflow-x: hidden
+}
+
+h1 {
+    font-size: 36px
+}
+
+h2 {
+    font-size: 30px
+}
+
+h3 {
+    font-size: 24px
+}
+
+h4 {
+    font-size: 20px
+}
+
+h5 {
+    font-size: 18px
+}
+
+h6 {
+    font-size: 16px
+}
+
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-weight: 400;
+    margin: 10px 0
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin: 20px 0
+}
+
+
+img {
+    vertical-align: middle
+}
+
+a {
+    color: inherit
+}
+
+.edit-text-field {
+    width: 100%;
+}
+
+.edit-text-field-large {
+    height: 400px;
+}
+
+.table,
+.table-all {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    display: table
+}
+
+.table-all {
+    border: 1px solid #ccc
+}
+
+.bordered tr,
+.table-all tr {
+    border-bottom: 1px solid #ddd
+}
+
+.striped tbody tr:nth-child(even) {
+    background-color: #f1f1f1
+}
+
+.table-all tr:nth-child(odd) {
+    background-color: #fff
+}
+
+.table-all tr:nth-child(even) {
+    background-color: #f1f1f1
+}
+
+
+.centered-image-container {
+    display: flex;
+    justify-content: center;
+}
+
+.centered-image {
+    max-width: 100%;
+    height: auto;
+}
+
+.table td,
+.table th,
+.table-all td,
+.table-all th {
+    padding: 8px 8px;
+    display: table-cell;
+    text-align: left;
+    vertical-align: top
+}
+
+.borrowed-books {
+    width: 50%;
+    float: left;
+}
+
+.returned-books {
+    width: 50%;
+    float: right;
+}
+
+.table th:first-child,
+.table td:first-child,
+.table-all th:first-child,
+.table-all td:first-child {
+    padding-left: 16px
+}
+
+.bold {
+    font-weight: bolder
+}
+
+.border {
+    border-style: solid;
+    border-color: #0b142b;
+}
+
+.button {
+    border: none;
+    display: inline-block;
+    padding: 8px 16px;
+    vertical-align: middle;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    background-color: inherit;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+    background-color: #0b142b;
+    color: #f1b771;
+}
+
+.button:hover {
+    background-color: #f1b771;
+    color: #0b142b;
+}
+
+.ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0
+}
+
+.ul li {
+    padding: 8px 16px;
+    border-bottom: 1px solid #ddd
+}
+
+.ul li:last-child {
+    border-bottom: none
+}
+
+.input {
+    padding: 8px;
+    display: block;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    width: 100%
+}
+
+.select {
+    padding: 9px 0;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #ccc
+}
+
+.bar {
+    width: 100%;
+    overflow: hidden
+}
+
+.center .bar {
+    display: inline-block;
+    width: auto
+}
+
+.bar .bar-item {
+    padding: 8px 16px;
+    float: left;
+    width: auto;
+    border: none;
+    display: block;
+    outline: 0
+}
+
+.bar .button {
+    white-space: normal;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12)
+}
+
+.bar-block .bar-item {
+    width: 100%;
+    display: block;
+    padding: 8px 16px;
+    text-align: left;
+    border: none;
+    white-space: normal;
+    float: none;
+    outline: 0
+}
+
+.bar-block.center .bar-item {
+    text-align: center
+}
+
+.color-granat {
+    background-color: #0b142b;
+    color: #eab676;
+}
+
+.block {
+    display: block;
+    width: 100%
+}
+
+
+.content {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 980px;
+}
+
+.top,
+.bottom {
+    position: fixed;
+    width: 100%;
+    z-index: 1
+}
+
+.top {
+    top: 0
+}
+
+.bottom {
+    bottom: 0
+}
+
+.upcoming-due-dates {
+    border-style: solid;
+    padding: 5%;
+}
+
+.container,
+.panel {
+    padding: 0.01em 16px
+}
+
+.panel {
+    margin-top: 16px;
+    margin-bottom: 16px
+}
+
+.left-align {
+    text-align: left !important
+}
+
+.right-align {
+    text-align: right !important
+}
+
+.justify {
+    text-align: justify !important
+}
+
+.center {
+    text-align: center !important
+}
+
+.margin-top {
+    margin-top: 16px !important
+}
+
+.padding {
+    padding: 8px 16px !important
+}
+
+.padding-large {
+    padding: 12px 24px !important
+}
+
+
+.left {
+    float: left !important
+}
+
+.right {
+    float: right !important
+}

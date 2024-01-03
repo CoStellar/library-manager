@@ -1,118 +1,100 @@
-<html>
+<!DOCTYPE html>
+<html lang="pl">
 <head>
-<style>
-  body {
-    background-color: #E6E6FA;
-  }
-
-  .button {
-    display:inline-block;
-    color:#444;
-    border:1px solid #CCC;
-    background:#DDD;
-    box-shadow: 0 0 5px -1px rgba(0,0,0,0.2);
-    cursor:pointer;
-    vertical-align:middle;
-    max-width: 100px;
-    padding: 5px;
-    text-align: center;
-  }
-
-  .button:active {
-    color:red;
-    box-shadow: 0 0 5px -1px rgba(0,0,0,0.6);
-  }
-
-  .borrowed-books {
-    width: 50%;
-    float: left;
-  }
-
-  .returned-books {
-    width: 50%;
-    float: right;
-  }
-
-  .user-section {
-    clear: both;
-    margin-top: 20px;
-  }
-
-  .user-books {
-    width: 100%;
-  }
-</style>
+  <title>Witamy w bibliotece!</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= stylesheet_link_tag "application.css" %>
 </head>
 <body>
 
-  <p><%= link_to "Lista książek", list_path, class: "button" %></p>
-  <p><%= link_to "Strona główna", root_path, class: "button" %></p>
+<!-- Navbar -->
+<div class="top">
+  <div class="bar color-granat ">
+     <%= button_to "Strona główna", root_path, :method => :get, class: "bar-item button padding-large" %>
+    <% if current_user %>
+      <%= button_to "Panel użytkownika", panel_path, :method => :get, class: "bar-item button padding-large" %>
+      <% if current_user.approved == "true" %>
+        <%= button_to "Lista książek", list_path, :method => :get, class: "bar-item button padding-large " %>
+      <% end %>
+      <%= link_to "Wyloguj", destroy_user_session_path, 'data-turbo-method': :delete, class: "bar-item button padding-large right" %>
+    <% else %>
+      <%= button_to "Zarejestruj się!", new_user_registration_path, :method => :get, class: "bar-item button padding-large right" %>
+      <%= button_to "Zaloguj", new_user_session_path, class: "bar-item button padding-large right" %>
+    <% end %>
+  </div>
+</div>
+
+<!-- Page content -->
+<div class="content" style="max-width:2000px;margin-top:46px">
   <% if flash[:alert] %>
   <div class="alert alert-danger">
     <%= flash[:alert] %>
   </div>
-<% end %>
-  <h2>Wypożyczone książki</h2>
+  <% end %>
+  <div class="container content padding-large" style="max-width:1000px">
+    <h2>Wypożyczone książki</h2>
 
-  <div class="borrowed-books">
-    <h3>Nieoddane książki:</h3>
-    <% @users_and_borrowed_books.each do |user| %>
-      <div class="user-section">
-        <h4><%= "Użytkownik: #{user.username}" %></h4>
-        <div class="user-books">
-          <% user.borrowings.each do |borrowing| %>
-            <% if !borrowing.returned %>
-              <ul>
-                <li>
-                  <strong>Tytuł: <%= borrowing.copy.book.title %></strong>
-                  <br>
-                  <strong>ID: <%= borrowing.copy.id %></strong>
-                  <br>
-                  Data wypożyczenia: <%= borrowing.borrow_date %>
-                  <br>
-                  Data do zwrotu: <%= borrowing.due_date %>
-                  <br>
-                  <% if (borrowing.due_date - Date.today).to_i < 0 %>
-                  Należność za zwłokę: <%= (borrowing.due_date - Date.today).to_i * 10 *(-1) %>
-                  <br>
-                  <% end %>
-                  <%= link_to "Oddaj", return_book_borrowing_path(borrowing, copy_id: borrowing.copy.id), method: :put, class: "button" %>
-                </li>
-              </ul>
+    <div class="borrowed-books">
+      <h3>Nieoddane książki:</h3>
+      <% @users_and_borrowed_books.each do |user| %>
+        <div class="user-section">
+          <h4><%= "Użytkownik: #{user.username}" %></h4>
+          <div class="user-books">
+            <% user.borrowings.each do |borrowing| %>
+              <% if !borrowing.returned %>
+                <ul>
+                  <li>
+                    <strong>Tytuł: <%= borrowing.copy.book.title %></strong>
+                    <br>
+                    <strong>ID: <%= borrowing.copy.id %></strong>
+                    <br>
+                    Data wypożyczenia: <%= borrowing.borrow_date %>
+                    <br>
+                    Data do zwrotu: <%= borrowing.due_date %>
+                    <br>
+                    <% if (borrowing.due_date - Date.today).to_i < 0 %>
+                    Należność za zwłokę: <%= (borrowing.due_date - Date.today).to_i * 10 *(-1) %>
+                    <br>
+                    <% end %>
+                    <%= link_to "Oddaj", return_book_borrowing_path(borrowing, copy_id: borrowing.copy.id), method: :put, class: "button" %>
+                  </li>
+                </ul>
+              <% end %>
             <% end %>
-          <% end %>
+          </div>
         </div>
-      </div>
-    <% end %>
-  </div>
+      <% end %>
+    </div>
 
-  <div class="returned-books">
-    <h3>Oddane książki:</h3>
-    <% @users_and_borrowed_books.each do |user| %>
-      <div class="user-section">
-        <h4><%= "Użytkownik: #{user.username}" %></h4>
-        <div class="user-books">
-          <% user.borrowings.each do |borrowing| %>
-            <% if borrowing.returned %>
-              <ul>
-                <li>
-                  <strong>Tytuł: <%= borrowing.copy.book.title %></strong>
-                  <br>
-                  <strong>ID: <%= borrowing.copy.id %></strong>
-                  <br>
-                  Data wypożyczenia: <%= borrowing.borrow_date %>
-                  <br>
-                  Data do zwrotu: <%= borrowing.due_date %>
-                  <br>
-                  Książka zwrócona
-                </li>
-              </ul>
+    <div class="returned-books">
+      <h3>Oddane książki:</h3>
+      <% @users_and_borrowed_books.each do |user| %>
+        <div class="user-section">
+          <h4><%= "Użytkownik: #{user.username}" %></h4>
+          <div class="user-books">
+            <% user.borrowings.each do |borrowing| %>
+              <% if borrowing.returned %>
+                <ul>
+                  <li>
+                    <strong>Tytuł: <%= borrowing.copy.book.title %></strong>
+                    <br>
+                    <strong>ID: <%= borrowing.copy.id %></strong>
+                    <br>
+                    Data wypożyczenia: <%= borrowing.borrow_date %>
+                    <br>
+                    Data do zwrotu: <%= borrowing.due_date %>
+                    <br>
+                    Książka zwrócona
+                  </li>
+                </ul>
+              <% end %>
             <% end %>
-          <% end %>
+          </div>
         </div>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
-
+</div>
 </body>
 </html>
