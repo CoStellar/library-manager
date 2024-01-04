@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <%= stylesheet_link_tag "application.css" %>
+
+  
 </head>
 <body>
 
@@ -18,13 +20,6 @@
         <%= button_to "Lista książek", list_path, :method => :get, class: "bar-item button padding-large " %>
         <% if current_user.role != "Użytkownik" %>
           <%= button_to "Edytuj książkę", edit_book_path(@book), :method => :get, class: "bar-item button padding-large "  %>
-          <form action="<%= show_path %>" method="post" data-turbo-method="delete" data-turbo-confirm="Czy jesteś pewien?">
-            <input type="hidden" name="_method" value="delete">
-            <input type="submit" value="Usuń książkę" class =  "bar-item button padding-large right" >
-          </form>
-          <%= form_with model: [ @book, @book.copies.build ] do |form| %>
-              <%= form.submit "Dodaj kopię", class: "bar-item button padding-large "%>
-          <% end %>
         <% end %>
       <% end %>
       <%= link_to "Wyloguj", destroy_user_session_path, 'data-turbo-method': :delete, class: "bar-item button padding-large right" %>
@@ -41,16 +36,24 @@
 
   <div class="container content padding-large" style="max-width:800px">
     <div class="border padding">
+
+      <% if current_user.role != "Użytkownik" %>
+       <form action="<%= show_path %>" method="post" data-turbo-method="delete" data-turbo-confirm="Czy jesteś pewien?">
+            <input type="hidden" name="_method" value="delete">
+            <input type="submit" value="Usuń książkę" class =  "button" >
+          </form>
+      <% end %>
+
       <h1><b>Książka:</b></h1>
       <ul><b>Tytuł:</b> <%= @book.title%></ul>
       <ul><b>Autor:</b> <%= @book.author%></ul>
       <ul><b>Gatunek:</b> <%= @book.genre%></ul>
       <ul><b>Numer ISBN:</b> <%= @book.isbn%></ul>
       <ul><b>Ilość kopii:</b> <%= @book.copies.count %></ul>
-      <% if @book.average_rating.present? %>
+      <% if @book.reviews.present? %>
         <ul><b>Średnia ocena:</b> <%= @book.average_rating %></ul>
       <% else %>
-        <ul><b>Brak recenzji</b></ul>
+        <ul><b>Ta książka nie została jeszcze oceniona!</b></ul>
       <% end %>
       <ul><b>Opis tytułu:</b></ul>
       
@@ -105,6 +108,13 @@
         <% end %>
 
     <div class= "border padding">
+
+      <% if current_user.role != "Użytkownik" %>
+      <%= form_with model: [ @book, @book.copies.build ] do |form| %>
+      <%= form.submit "Dodaj kopię", class: "button"%>
+      <% end %>
+      <% end %>
+
         <% if @book.copies.any? %>
           <h1>Kopie książki:</h1>
           <table style="border-collapse: separate; border-spacing: 10px;">
@@ -138,14 +148,14 @@
                     </td>
                     <td style="border-bottom: 1px solid black;">
                       <% if !copy.borrowed %>
-                          <%= link_to "Wypożycz", borrow_path(book_id: @book.id, copy_id: copy.id) %>
+                          <%= link_to "Wypożycz", borrow_path(book_id: @book.id, copy_id: copy.id), class: "round-button" %>
                       <% end %>
                     </td>
                     <% if current_user.role != "Użytkownik" %> 
                       <td style="border-bottom: 1px solid black;">
                         <% if !copy.borrowed? %>
                         <div>
-                          <%= link_to "Usuń", [copy.book, copy], data: {
+                          <%= link_to "Usuń", [copy.book, copy], class: "round-button", data: {
                           turbo_method: :delete,
                           turbo_confirm: "Are you sure?"
                         }  %>
