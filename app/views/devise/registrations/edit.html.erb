@@ -38,7 +38,7 @@
       </div>
 
       <div class="field"> 
-        <%= f.label :password, "Hasło"%><br />
+        <%= f.label :password, "Hasło"%><br /><i>Jeśli nie zamierzasz zmienić hasła, pozostaw puste</i><br />
         <%= f.password_field :password, autocomplete: "new-password" %>
         <% if @minimum_password_length %>
           <br />

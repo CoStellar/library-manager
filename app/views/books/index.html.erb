@@ -55,7 +55,7 @@
           </tr>
         </thead>
         <tbody>
-          <% @books.each do |book| %>
+          <% @books.order(:title).each do |book| %>
             <tr>
               <td style="border-bottom: 1px solid black;">
                 <a href="/books/<%= book.id %>", class = "brick">

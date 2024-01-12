@@ -29,7 +29,7 @@ User.create(
 )
 
 User.create(
-  email: 'użytkownik@biblioteka.com',
+  email: 'uzytkownik@biblioteka.com',
   password: 'Użytkownik123',
   username: 'Użytkownik',
   first_name: 'Użytkownik',
