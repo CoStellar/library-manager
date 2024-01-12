@@ -1,196 +1,179 @@
-<html>
+<!DOCTYPE html>
+<html lang="pl">
 <head>
-<style>
-body {
-  background-color: #E6E6FA;
-}
+  <title>Witamy w bibliotece!</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= stylesheet_link_tag "application.css" %>
 
-.red-box {
-  background: red;
-  background: var(--red-color, red);
-  height: 18px;
-  width: 70px;
-  color: orange; 
-  font-weight: bold; 
-}
-.green-box {
-  background: green;
-  background: var(--green-color, green);
-  height: 18px;
-  width: 70px;
-  color: yellow; 
-  font-weight: bold; 
-}
-
-a:link, a:visited
- {
-  background-color: #a5f76a;
-  color: black;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-}
-
-a:hover, a:active 
-{
-  color: black;
-  background-color: #f55546;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-}
-
-</style>
+  
 </head>
 <body>
-  
 
-  
-
-<p><%= button_to "Lista książek", list_path, :method => :get %></p>
-<p><%= button_to "Strona główna", root_path, :method => :get %></p>
-
-<% if current_user.role != "Użytkownik" %>
-   <p><%= button_to "Edytuj książkę", edit_book_path(@book), :method => :get %></p>
-   <p> <form action="<%= show_path %>" method="post" data-turbo-method="delete" data-turbo-confirm="Czy jesteś pewien?">
-   <input type="hidden" name="_method" value="delete">
-   <input type="submit" value="Usuń książkę"></p>
-</form>
-<% end %>
-
-<% if @book.copies.all?(&:borrowed) && !@book.copies.joins(:borrowings).exists?(borrowings: { returned: false, user_id: current_user.id })%>
-  <% if !current_user.reservations.exists?(book_id: @book.id, reservation_completed: false) %>
-    <%= form_with(model: @reservation, url: reserve_book_path(@book)) do |form| %>
-    <%= form.hidden_field :book_id, value: @book.id %>
-    <%= form.submit "Zarezerwuj książkę" %>
-  <% end %>
-  <% end %>
-  <% if current_user.reservations.exists?(book_id: @book.id, reservation_completed: false)%>
-  <%= form_with(model: @reservation, url: cancel_reservation_path(@book.reservations.find_by(user_id: current_user.id)),
-    method: :delete, 
-    data: { turbo_confirm: "Czy jesteś pewien?" }) do |form| %>
-  <%= form.submit "Anuluj rezerwację" %>
-  <% end %>
-  <% end %>
-<% end %>
-
-
-<% if current_user.borrowings.exists?(copy_id: @book.copies.ids, returned: true) %>
-  <% if !current_user.reviews.exists?(book_id: @book.id) %>
-  <h2>Dodaj recenzję:</h2>
-  <%= form_with(model: [ @book, @book.reviews.build ], local: true) do |form| %>
-    <p>
-      <%= form.label :rating, 'Ocena (1-5):' %>
-      <%= form.select :rating, options_for_select((1..5).map { |num| [num, num] }) %>
-    </p>
-    <%= form.submit 'Oceń książkę' %>
+<!-- Navbar -->
+<div class="top">
+  <div class="bar color-granat ">
+     <%= button_to "Strona główna", root_path, :method => :get, class: "bar-item button padding-large" %>
+    <% if current_user %>
+      <%= button_to "Panel użytkownika", panel_path, :method => :get, class: "bar-item button padding-large" %>
+      <% if current_user.approved == "true" %>
+        <%= button_to "Lista książek", list_path, :method => :get, class: "bar-item button padding-large " %>
+        <% if current_user.role != "Użytkownik" %>
+          <%= button_to "Edytuj książkę", edit_book_path(@book), :method => :get, class: "bar-item button padding-large "  %>
+        <% end %>
+      <% end %>
+      <%= link_to "Wyloguj", destroy_user_session_path, 'data-turbo-method': :delete, class: "bar-item button padding-large right" %>
+    <% else %>
+      <%= button_to "Zarejestruj się!", new_user_registration_path, :method => :get, class: "bar-item button padding-large right" %>
+      <%= button_to "Zaloguj", new_user_session_path, class: "bar-item button padding-large right" %>
     <% end %>
-  <% end %>
-  <% if current_user.reviews.exists?(book_id: @book.id) %>
-  <% user_review = @book.reviews.find_by(user_id: current_user.id) %>
-  <p> Twoja ocena: <%= user_review.rating %> </p>
-  <%= form_with(model: @review, url: cancel_review_path(@book.reviews.find_by(user_id: current_user.id)),
-    method: :delete, 
-    data: { turbo_confirm: "Czy jesteś pewien?" }) do |form| %>
-  <%= form.submit "Usuń ocenę książki" %>
-  <% end %>
-  <% end %>
-<% end %>
-
-
-  
-
-
-
-
-<h2>Książka:</h2>
-<ul>Tytuł: <%= @book.title%></ul>
-<ul>Autor: <%= @book.author%></ul>
-<ul>Gatunek: <%= @book.genre%></ul>
-<ul>Numer ISBN: <%= @book.isbn%></ul>
-<ul>Ilość kopii: <%= @book.copies.count %></ul>
-<ul>Opis tytułu:</ul>
-<div>
-   <%= @book.description%>
+  </div>
 </div>
 
 
-<% if @book.average_rating.present? %>
-  <h1>Średnia ocena: <%= @book.average_rating %></h1>
-<% else %>
-  <h1>Brak recenzji</h1>
-<% end %>
+<!-- Page content -->
+<div class="content" style="max-width:2000px;margin-top:46px">
 
+  <div class="container content padding-large" style="max-width:800px">
+    <div class="border padding">
 
-<% if current_user.role != "Użytkownik" %>
-   <h2>Dodaj kopię książki:</h2>
-  <%= form_with model: [ @book, @book.copies.build ] do |form| %>
-      <p>
-        <%= form.submit "Dodaj kopię" %>
-      </p>
-  <% end %>
-<% end %>
+      <% if current_user.role != "Użytkownik" %>
+       <form action="<%= show_path %>" method="post" data-turbo-method="delete" data-turbo-confirm="Czy jesteś pewien?">
+            <input type="hidden" name="_method" value="delete">
+            <input type="submit" value="Usuń książkę" class =  "button" >
+          </form>
+      <% end %>
 
+      <h1><b>Książka:</b></h1>
+      <ul><b>Tytuł:</b> <%= @book.title%></ul>
+      <ul><b>Autor:</b> <%= @book.author%></ul>
+      <ul><b>Gatunek:</b> <%= @book.genre%></ul>
+      <ul><b>Numer ISBN:</b> <%= @book.isbn%></ul>
+      <ul><b>Ilość kopii:</b> <%= @book.copies.count %></ul>
+      <% if @book.reviews.present? %>
+        <ul><b>Średnia ocena:</b> <%= @book.average_rating %></ul>
+      <% else %>
+        <ul><b>Ta książka nie została jeszcze oceniona!</b></ul>
+      <% end %>
+      <ul><b>Opis tytułu:</b></ul>
+      
+      <div>
+        <%= @book.description%>
+      </div>
+    </div>
 
+    
 
+    <div class= "border padding">
+      <% if current_user.borrowings.exists?(copy_id: @book.copies.ids, returned: true) %>
+        <% if !current_user.reviews.exists?(book_id: @book.id) %>
+        <h2>Dodaj ocenę:</h2>
+        <%= form_with(model: [ @book, @book.reviews.build ], local: true) do |form| %>
+          <p>
+            <%= form.label :rating, 'Ocena:' %>
+            <%= form.select :rating, (1..5).to_a.reverse.map { |num| ["#{num} gwiazdek", num] } %>
 
-<% if @book.copies.any? %>
-  <h1>Kopie książki:</h1>
-  <table style="border-collapse: separate; border-spacing: 10px;">
-    <thead>
-      <tr>
-        <th style="border-bottom: 2px solid black;">ID książki</th>
-        <th style="border-bottom: 2px solid black;">ID kopii</th>
-        <th style="border-bottom: 2px solid black;">Dostępność</th>
-        <th style="border-bottom: 2px solid black;">Wypożycz</th>
-                <% if current_user.role != "Użytkownik" %> <!-- Dodanie warunku dla kolumny akcji -->
-          <th style="border-bottom: 2px solid black;">Usuń </th>
+          </p>
+          <%= form.submit 'Oceń książkę', class: "button" %>
+          <% end %>
         <% end %>
-      </tr>
-    </thead>
-    <tbody>
-      <% @book.copies.each do |copy| %>
-        <% if copy.persisted? %>
-          <tr>
-            <td style="border-bottom: 1px solid black;">
-              <%= copy.book_id %>
-            </td>
-            <td style="border-bottom: 1px solid black;">
-              <%= copy.id %>
-            </td>
-            <td style="border-bottom: 1px solid black;">
-            <% if copy.borrowed %>
-              <div class="red-box"><center>Niedostępna</center></div>
-            <% else %>
-              <div class="green-box"><center>Dostępna</center></div>
-            <% end %>
-            </td>
-            <td style="border-bottom: 1px solid black;">
-              <% if !copy.borrowed %>
-                  <%= link_to "Wypożycz", borrow_path(book_id: @book.id, copy_id: copy.id) %>
-              <% end %>
-            </td>
-            <% if current_user.role != "Użytkownik" %> 
-              <td style="border-bottom: 1px solid black;">
-                <% if !copy.borrowed? %>
-                <div>
-                  <%= link_to "Usuń", [copy.book, copy], data: {
-                  turbo_method: :delete,
-                  turbo_confirm: "Are you sure?"
-                }  %>
-                </div>
-              </td>
-              <% end %>
-            <% end %>
-          </tr>
+        <% if current_user.reviews.exists?(book_id: @book.id) %>
+        <% user_review = @book.reviews.find_by(user_id: current_user.id) %>
+        <p> <b>Twoja ocena:</b> <%= user_review.rating %> </p>
+        <%= form_with(model: @review, url: cancel_review_path(@book.reviews.find_by(user_id: current_user.id)),
+          method: :delete, 
+          data: { turbo_confirm: "Czy jesteś pewien?" }) do |form| %>
+        <%= form.submit "Usuń ocenę książki", class: "button" %>
+        <% end %>
         <% end %>
       <% end %>
-    </tbody>
-  </table>
-  <% end %>
+    </div>
+
+        <% if @book.copies.all?(&:borrowed) && !@book.copies.joins(:borrowings).exists?(borrowings: { returned: false, user_id: current_user.id })%>
+        /<div class= "border padding">
+          <% if !current_user.reservations.exists?(book_id: @book.id, reservation_completed: false) %>
+            <%= form_with(model: @reservation, url: reserve_book_path(@book)) do |form| %>
+            <%= form.hidden_field :book_id, value: @book.id %>
+            <%= form.submit "Zarezerwuj książkę", class: "button" %>
+          <% end %>
+          <% end %>
+          <% if current_user.reservations.exists?(book_id: @book.id, reservation_completed: false)%>
+          <%= form_with(model: @reservation, url: cancel_reservation_path(@book.reservations.find_by(user_id: current_user.id)),
+            method: :delete, 
+            data: { turbo_confirm: "Czy jesteś pewien?" }) do |form| %>
+          <%= form.submit "Anuluj rezerwację", class: "button" %>
+          <% end %>
+          <% end %>
+        </div>
+        <% end %>
+
+    <div class= "border padding">
+
+      <% if current_user.role != "Użytkownik" %>
+      <%= form_with model: [ @book, @book.copies.build ] do |form| %>
+      <%= form.submit "Dodaj kopię", class: "button"%>
+      <% end %>
+      <% end %>
+
+        <% if @book.copies.any? %>
+          <h1>Kopie książki:</h1>
+          <table style="border-collapse: separate; border-spacing: 10px;">
+            <thead>
+              <tr>
+                <th style="border-bottom: 2px solid black;">ID książki</th>
+                <th style="border-bottom: 2px solid black;">ID kopii</th>
+                <th style="border-bottom: 2px solid black;">Dostępność</th>
+                <th style="border-bottom: 2px solid black;">Wypożycz</th>
+                        <% if current_user.role != "Użytkownik" %> <!-- Dodanie warunku dla kolumny akcji -->
+                  <th style="border-bottom: 2px solid black;">Usuń </th>
+                <% end %>
+              </tr>
+            </thead>
+            <tbody>
+              <% @book.copies.each do |copy| %>
+                <% if copy.persisted? %>
+                  <tr>
+                    <td style="border-bottom: 1px solid black;">
+                      <%= copy.book_id %>
+                    </td>
+                    <td style="border-bottom: 1px solid black;">
+                      <%= copy.id %>
+                    </td>
+                    <td style="border-bottom: 1px solid black;">
+                    <% if copy.borrowed %>
+                      <div class="red-box"><center>Niedostępna</center></div>
+                    <% else %>
+                      <div class="green-box"><center>Dostępna</center></div>
+                    <% end %>
+                    </td>
+                    <td style="border-bottom: 1px solid black;">
+                      <% if !copy.borrowed %>
+                          <%= link_to "Wypożycz", borrow_path(book_id: @book.id, copy_id: copy.id), class: "round-button" %>
+                      <% end %>
+                    </td>
+                    <% if current_user.role != "Użytkownik" %> 
+                      <td style="border-bottom: 1px solid black;">
+                        <% if !copy.borrowed? %>
+                        <div>
+                          <%= link_to "Usuń", [copy.book, copy], class: "round-button", data: {
+                          turbo_method: :delete,
+                          turbo_confirm: "Are you sure?"
+                        }  %>
+                        </div>
+                      </td>
+                      <% end %>
+                    <% end %>
+                  </tr>
+                <% end %>
+              <% end %>
+            </tbody>
+          </table>
+          <% end %>
 
 
 
-
-
+      </div>
+    </div>
+  </div>
+</div>
 </body>

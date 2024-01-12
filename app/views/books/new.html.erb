@@ -1,50 +1,81 @@
-<h1>Dodaj książkę</h1>
-
-<%= form_with model: @book do |form| %>
-  <div>
-    <%= form.label :title, "Tytuł" %><br>
-    <%= form.text_field :title %>
-    <% @book.errors.full_messages_for(:title).each do |message| %>
-      <div><%= message %></div>
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= stylesheet_link_tag "application.css" %>
+</head>
+<body>
+<div class="top">
+  <div class="bar color-granat ">
+     <%= button_to "Strona główna", root_path, :method => :get, class: "bar-item button padding-large" %>
+    <% if current_user %>
+      <%= button_to "Panel użytkownika", panel_path, :method => :get, class: "bar-item button padding-large" %>
+      <% if current_user.approved == "true" %>
+        <%= button_to "Cofnij", list_path,  :method => :get, class: "bar-item button padding-large " %>
+      <% end %>
+      <%= link_to "Wyloguj", destroy_user_session_path, 'data-turbo-method': :delete, class: "bar-item button padding-large right" %>
+    <% else %>
+      <%= button_to "Zarejestruj się!", new_user_registration_path, :method => :get, class: "bar-item button padding-large right" %>
+      <%= button_to "Zaloguj", new_user_session_path, class: "bar-item button padding-large right" %>
     <% end %>
   </div>
+</div>
 
-  <div>
-    <%= form.label :author, "Autor" %><br>
-    <%= form.text_field :author %>
-    <% @book.errors.full_messages_for(:author).each do |message| %>
-      <div><%= message %></div>
+
+<div class="content" style="max-width:2000px;margin-top:46px">
+  <div class="container content center" style="max-width:2000px;margin-top:46px"><h1><b>Dodaj</b></h1></div>
+    <div class="container content padding-large border" style="max-width:800px">
+
+     <%= form_with model: @book do |form| %>
+      <div>
+        <%= form.label :title, "Tytuł", class: "bold" %><br>
+        <%= form.text_field :title, class: "edit-text-field"%>
+        <% @book.errors.full_messages_for(:title).each do |message| %>
+          <div><%= message %></div>
+        <% end %>
+      </div>
+
+      <div>
+        <%= form.label :author, "Autor", class: "bold" %><br>
+        <%= form.text_field :author, class: "edit-text-field" %>
+        <% @book.errors.full_messages_for(:author).each do |message| %>
+          <div><%= message %></div>
+        <% end %>
+      </div>
+
+      <div>
+        <%= form.label :genre, "Gatunek", class: "bold" %><br>
+        <%= form.text_field :genre, class: "edit-text-field" %>
+        <% @book.errors.full_messages_for(:genre).each do |message| %>
+          <div><%= message %></div>
+        <% end %>
+      </div>
+
+      <div>
+        <%= form.label :isbn, "ISBN", class: "bold" %><br>
+        <%= form.text_field :isbn, class: "edit-text-field" %>
+        <% @book.errors.full_messages_for(:isbn).each do |message| %>
+          <div><%= message %></div>
+        <% end %>
+      </div>
+
+      <div>
+        <%= form.label :description, "Opis książki", class: "bold" %><br>
+        <%= form.text_area :description, class: "edit-text-field edit-text-field-large"%>
+        <% @book.errors.full_messages_for(:description).each do |message| %>
+          <div><%= message %></div>
+        <% end %>
+      </div>
+
+      <div>
+        <%= form.submit "Dodaj książkę", class: "button" %>
+      </div><br/>
     <% end %>
   </div>
+</div>
 
-  <div>
-    <%= form.label :genre, "Gatunek" %><br>
-    <%= form.text_field :genre %>
-    <% @book.errors.full_messages_for(:genre).each do |message| %>
-      <div><%= message %></div>
-    <% end %>
-  </div>
 
-  <div>
-    <%= form.label :isbn, "ISBN" %><br>
-    <%= form.text_field :isbn %>
-    <% @book.errors.full_messages_for(:isbn).each do |message| %>
-      <div><%= message %></div>
-    <% end %>
-  </div>
+</body>
+</html>
 
-  <div>
-    <%= form.label :description, "Opis książki" %><br>
-    <%= form.text_area :description, cols: 30, rows: 15  %>
-    <% @book.errors.full_messages_for(:description).each do |message| %>
-      <div><%= message %></div>
-    <% end %>
-  </div>
-
-  <div>
-    <%= form.submit "Dodaj książkę" %>
-  </div><br/>
-<% end %>
-
-<%= button_to "Cofnij", list_path,  :method => :get %><br/>
-<%= button_to "Strona główna", root_path, :method => :get %>
