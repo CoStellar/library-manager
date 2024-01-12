@@ -8,6 +8,37 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
+User.create(
+  email: 'admin@biblioteka.com',
+  password: 'Admin123',
+  username: 'Admin',
+  first_name: 'Użytkownik',
+  last_name: 'Admin',
+  approved: true,
+  role: 2  # Admin
+)
+
+User.create(
+  email: 'bibliotekarz@biblioteka.com',
+  password: 'Bibliotekarz123',
+  username: 'Bibliotekarz',
+  first_name: 'Użytkownik',
+  last_name: 'Bibliotekarz',
+  approved: true,
+  role: 1  # Bibliotekarz
+)
+
+User.create(
+  email: 'użytkownik@biblioteka.com',
+  password: 'Użytkownik123',
+  username: 'Użytkownik',
+  first_name: 'Użytkownik',
+  last_name: 'Zwyczajny',
+  approved: true,
+  role: 0  # Zwykły użytkownik
+)
+
+
 Book.create(
   title: 'Pan Lodowego Ogrodu - księga I',
   author: 'Jarosław Grzędowicz',
@@ -370,6 +401,8 @@ Book.create(
   isbn: '9788382226874',
   description: 'Przełom XVIII i XIX wieku. W posępnej scenerii rozległych wrzosowisk pośród dzikich wzgórz północnej Anglii snuje się mroczna historia przekraczającej wszelkie bariery miłości. Catherine i Heathcliffa łączy szczególne pokrewieństwo dusz, lecz choć są dla siebie stworzeni, ich drogi się rozchodzą. W cieniu wiodącego do zatracenia uczucia rozgrywają się prawdziwe dramaty ich rodzeństwa i dzieci. Wichrowe wzgórza to powieść o wielkich namiętnościach, o budującej i niszczącej sile miłości, o nienawiści, zemście i rozpaczy prowadzącej do szaleństwa.'
 )
+
+
 
 
 

@@ -10,26 +10,26 @@
 
 <!-- Navbar -->
 <div class="top">
-  <div class="bar color-granat ">
-     <%= button_to "Strona główna", root_path, :method => :get, class: "bar-item button padding-large" %>
+  <div class="bar color-granat">
+     <%= button_to "Strona główna", root_path, method: :get, class: "bar-item button padding-large" %>
     <% if current_user %>
-      <%= button_to "Panel użytkownika", panel_path, :method => :get, class: "bar-item button padding-large" %>
+      <%= button_to "Panel użytkownika", panel_path, method: :get, class: "bar-item button padding-large" %>
       <% if current_user.approved == "true" %>
-        <%= button_to "Lista książek", list_path, :method => :get, class: "bar-item button padding-large " %>
+        <%= button_to "Lista książek", list_path, method: :get, class: "bar-item button padding-large" %>
       <% end %>
       <%= link_to "Wyloguj", destroy_user_session_path, 'data-turbo-method': :delete, class: "bar-item button padding-large right" %>
     <% else %>
-      <%= button_to "Zarejestruj się!", new_user_registration_path, :method => :get, class: "bar-item button padding-large right" %>
+      <%= button_to "Zarejestruj się!", new_user_registration_path, method: :get, class: "bar-item button padding-large right" %>
       <%= button_to "Zaloguj", new_user_session_path, class: "bar-item button padding-large right" %>
     <% end %>
   </div>
 </div>
 
-<div class="content" style="max-width:2000px;margin-top:46px">
-  <div class="container content padding-large" style="max-width:800px">
-    <h2>Edytuj <%= resource_name.to_s.humanize %> - <%= @user.first_name %></h2>
+<div class="content" style="max-width:2000px; margin-top:46px">
+  <div class="container content padding-large" style="max-width:600px">
+    <h2>Zmień dane: <%= @user.first_name %></h2>
 
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :patch }) do |f| %>
       <%= render "devise/shared/error_messages", resource: resource %>
 
       <div class="field">
@@ -37,33 +37,40 @@
         <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
       </div>
 
-      <% unless current_user.role != "Użytkownik" %>
-        <div class="field">
-          <%= f.label :password %> <i>(pozostaw puste, jeśli nie chcesz go zmieniać)</i><br />
-          <%= f.password_field :password, autocomplete: "new-password" %>
-          <% if @minimum_password_length %>
-            <br />
-            <em><%= @minimum_password_length %> znaków minimum</em>
-          <% end %>
-        </div>
+      <div class="field"> 
+        <%= f.label :password, "Hasło"%><br />
+        <%= f.password_field :password, autocomplete: "new-password" %>
+        <% if @minimum_password_length %>
+          <br />
+          <em><%= @minimum_password_length %> znaków minimum</em>
+        <% end %>
+      </div>
 
-        <div class="field">
-          <%= f.label :password_confirmation %><br />
-          <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-        </div>
-      <% end %>
+      <div class="field">
+        <%= f.label :password_confirmation, "Powtórz hasło" %><br />
+        <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+      </div>
 
-    <%= render "devise/shared/error_messages", resource: resource %>
+      <div class="field"> 
+        <%= f.label :current_password, "Aktualne hasło" %><br />
+        <%= f.password_field :current_password, autocomplete: "current-password" %>
+      </div>
+
+      <%= render "devise/shared/error_messages", resource: resource %>
+
       <div class="actions">
         <%= f.submit "Zaktualizuj", class: "button" %>
       </div>
     <% end %>
 
-
     <h3>Anuluj moje konto</h3>
 
-    <div> Nie jesteś zadowolony/a? <%= button_to "Anuluj moje konto", registration_path(resource_name), data: { confirm: "Czy na pewno?", turbo_confirm: "Czy na pewno?" }, method: :delete %></div>
+    <div>
+      Nie jesteś zadowolony/a? <%= button_to "Anuluj moje konto", registration_path(resource_name), data: { confirm: "Czy na pewno?", turbo_confirm: "Czy na pewno?" }, method: :delete %>
+    </div>
 
-    <%= button_to "Wróć", :back, :method => :get, class: "button"%>
+    <%= button_to "Wróć", :back, method: :get, class: "button" %>
   </div>
 </div>
+</body>
+</html>

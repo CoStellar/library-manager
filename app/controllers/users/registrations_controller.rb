@@ -1,6 +1,7 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   before_action :authenticate_user!
   before_action :authorize_admin_for_update_actions, only: [:edit, :update, :update_approval]
+  before_action :configure_account_update_params, only: [:update]
   helper UsersHelper
   # ...
   def configure_sign_up_params
@@ -14,9 +15,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
       resource.approved = false
     end
   end
-
+  def after_update_path_for(resource)
+    edit_user_registration_path(resource)
+  end
   def edit
-    @user = User.find(params[:id])
+    @user = current_user
     super
   end
 
@@ -38,10 +41,18 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
-
+  def update
+    super
+  end
   def authorize_admin_for_update_actions
     if current_user.role == '0' && action_name != 'update_approval'
       redirect_to root_path, alert: 'Nie masz uprawnień do tej akcji.'
     end
+  end
+
+  private
+
+  def configure_account_update_params
+    devise_parameter_sanitizer.permit(:account_update, keys: [:email, :password, :password_confirmation, :current_password])
   end
 end
