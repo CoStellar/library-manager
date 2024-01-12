@@ -14,17 +14,14 @@
     <%= button_to "Strona główna", root_path, :method => :get, class: "bar-item button padding-large" %>
     <% if current_user %>
       <%= button_to "Panel użytkownika", panel_path, :method => :get, class: "bar-item button padding-large" %>
-      <% if current_user.approved == "true" %>
+    <% if current_user.approved == "true" %>
         <%= button_to "Lista książek", list_path, :method => :get, class: "bar-item button padding-large " %>
         <%= button_to "Moje wypożyczenia", user_borrowing_path, :method => :get, class: "bar-item button padding-large " %>
         <%= button_to "Moje rezerwacje", user_reservations_path, :method => :get, class: "bar-item button padding-large " %>
         <% if current_user.role == "Bibliotekarz" %>
           <%= button_to "Uzytkownicy wypożyczający", return_path, :method => :get, class: "bar-item button padding-large " %>
         <% end %>
-        <% if current_user.role == "Admin" %>
-          <%= link_to 'Edytuj użytkowników', admin_users_path, class: "bar-item button padding-large " %>
-        <% end %> 
-      <% end %>
+    <% end %>
       <%= link_to "Wyloguj", destroy_user_session_path, 'data-turbo-method': :delete, class: "bar-item button padding-large right" %>
     <% else %>
       <%= button_to "Zarejestruj się!", new_user_registration_path, :method => :get, class: "bar-item button padding-large right" %>
@@ -43,20 +40,14 @@
 
     <div class="login">
       <% if current_user %>
-        <h2 class="bold">Witaj <%= current_user.username %>!</h2>
-          <% if current_user.approved == "true" %>
-            <p>Zalogowałeś/aś się pomyślnie jako <%= current_user.role %>.</p><br/>
-            <%= link_to "Zmień dane konta", edit_user_registration_path(current_user.id), class: "button"%>
-            <% if current_user.role != "Użytkownik" %>
-              <p>Liczba zarejestrowanych użytkowników: <%= User.count %></p>
-              <%= render "forms/approve_form", users: @users %>
-            <% end %>
-          <% else %>
-            <p>Twoje konto nie zostało jeszcze zatwierdzone</p>
-          <% end %>
+       <h2>Lista użytkowników</h2>
+        <% @users.each do |user| %>
+        <%= link_to user.username, edit_admin_user_path(user), class: "button padding-large margin-top" %><br>
+        <% end %>
       <% end %>
     </div>
   </div>
 </div>
 </body>
 </html>
+

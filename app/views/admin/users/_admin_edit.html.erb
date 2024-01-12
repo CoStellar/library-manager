@@ -1,0 +1,21 @@
+<%= form_for(@user, url: admin_user_path(@user), method: :patch) do |f| %>
+  <%= f.label :email %>
+  <%= f.text_field :email %><br>
+
+  <%= f.label :username %>
+  <%= f.text_field :username %><br>
+
+  <%= f.label :first_name %>
+  <%= f.text_field :first_name %><br>
+
+  <%= f.label :last_name %>
+  <%= f.text_field :last_name %><br>
+
+  <%= f.label :role %>
+  <%= f.select :role, User.roles.keys %><br>
+
+  <%= f.label :approved %>
+  <%= f.check_box :approved, {}, true, false %><br>
+
+  <%= f.submit 'Zapisz zmiany', class: "button"%>
+<% end %>
