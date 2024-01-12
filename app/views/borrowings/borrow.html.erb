@@ -5,6 +5,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <%= stylesheet_link_tag "application.css" %>
+  
+    <script defer>
+      document.addEventListener('DOMContentLoaded', function() {
+        var borrowDateField = document.getElementById('borrow_date');
+        var dueDateField = document.getElementById('due_date');
+
+        borrowDateField.addEventListener('change', function() {
+          var selectedDate = new Date(borrowDateField.value);
+          var maxDueDate = new Date(selectedDate.getTime() + (14 * 24 * 60 * 60 * 1000)); // Dodaj 14 dni w milisekundach
+
+          dueDateField.setAttribute('min', borrowDateField.value);
+          dueDateField.setAttribute('max', maxDueDate.toISOString().split('T')[0]);
+
+          // Ustawienie daty zwrotu na datę wypożyczenia
+          dueDateField.value = borrowDateField.value;
+        });
+      });
+    </script>
 </head>
 <body>
 
@@ -58,23 +76,6 @@
         <%= form.submit 'Wypożycz', form_class: 'form', class: 'button' %>
       <% end %>
 
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        var borrowDateField = document.getElementById('borrow_date');
-        var dueDateField = document.getElementById('due_date');
-
-        borrowDateField.addEventListener('change', function() {
-          var selectedDate = new Date(borrowDateField.value);
-          var maxDueDate = new Date(selectedDate.getTime() + (14 * 24 * 60 * 60 * 1000)); // Dodaj 14 dni w milisekundach
-
-          dueDateField.setAttribute('min', borrowDateField.value);
-          dueDateField.setAttribute('max', maxDueDate.toISOString().split('T')[0]);
-
-          // Ustawienie daty zwrotu na datę wypożyczenia
-          dueDateField.value = borrowDateField.value;
-        });
-      });
-    </script>
     <br>
 
 

@@ -48,6 +48,9 @@
         <%= f.submit "Zaloguj się", data: {turbo: false}, class: "button margin-top" %>
       </div>
     <% end %>
+    <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+      <%= link_to "Zapomniałeś hasła?", new_password_path(resource_name) %><br />
+    <% end %>
   </div>
 </div>
 </body>
