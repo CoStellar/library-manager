@@ -229,6 +229,61 @@ a {
     color: #0b142b;
 }
 
+.round-button {
+    border: none;
+    display: inline-block;
+    padding: 5px 15px;
+    vertical-align: middle;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    background-color: inherit;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+    background-color: #0b142b;
+    color: #f1b771;
+    border-radius: 5px;
+}
+
+.round-button:hover {
+    background-color: #f1b771;
+    color: #0b142b;
+}
+
+.brick {
+    background-color: white;
+    color: #0d172b;
+    border: 2px solid #436c6d;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+.brick:hover {
+    background-color: #436c6d;
+    color: white;
+}
+
+.red-box {
+    background: #DE8134;
+    background: var(--red-color, #DE8134);
+    padding: 5px 15px;
+    color: #04142C; 
+    font-weight: bold; 
+    border-radius: 5px;
+}
+.green-box {
+    padding: 5px 15px;
+    background: #436c6d;
+    background: var(--green-color, #436c6d);
+  
+    color: #F0FFFF; 
+    font-weight: bold; 
+     border-radius: 5px;
+}
+  
+
 .ul {
     list-style-type: none;
     padding: 0;

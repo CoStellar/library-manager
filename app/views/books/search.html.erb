@@ -58,7 +58,7 @@
         <% @results.each do |result| %>
           <tr>
             <td style="border-bottom: 1px solid black;">
-              <a href="/books/<%= result.id %>">
+              <a href="/books/<%= result.id %>", class = "brick">
                 <%= result.title %>
               </a>
             </td>

@@ -16,6 +16,11 @@
       <%= button_to "Panel użytkownika", panel_path, :method => :get, class: "bar-item button padding-large" %>
       <% if current_user.approved == "true" %>
         <%= button_to "Lista książek", list_path, :method => :get, class: "bar-item button padding-large " %>
+        <%= button_to "Moje wypożyczenia", user_borrowing_path, :method => :get, class: "bar-item button padding-large " %>
+        <%= button_to "Moje rezerwacje", user_reservations_path, :method => :get, class: "bar-item button padding-large " %>
+        <% if current_user.role == "Bibliotekarz" %>
+        <%= button_to "Uzytkownicy wypożyczający", return_path, :method => :get, class: "bar-item button padding-large " %>
+        <% end %> 
       <% end %>
       <%= link_to "Wyloguj", destroy_user_session_path, 'data-turbo-method': :delete, class: "bar-item button padding-large right" %>
     <% else %>
