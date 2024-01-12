@@ -15,6 +15,7 @@
       <% if current_user.approved == "true" %>
         <%= button_to "Moje wypożyczenia", user_borrowing_path, :method => :get, class: "bar-item button padding-large " %>
         <%= button_to "Moje rezerwacje", user_reservations_path, :method => :get, class: "bar-item button padding-large " %>
+         <%= button_to "Lista książek", list_path, :method => :get, class: "bar-item button padding-large " %>
         <% if current_user.role != "Użytkownik" %>
           <%= button_to "Dodaj książkę", newbook_path, :method => :get, class: "bar-item button padding-large " %>
         <% end %> 
