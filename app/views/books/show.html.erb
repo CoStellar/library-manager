@@ -37,11 +37,11 @@
   <div class="container content padding-large" style="max-width:800px">
     <div class="border padding">
 
-      <% if current_user.role != "Użytkownik" %>
-       <form action="<%= show_path %>" method="post" data-turbo-method="delete" data-turbo-confirm="Czy jesteś pewien?">
-            <input type="hidden" name="_method" value="delete">
-            <input type="submit" value="Usuń książkę" class =  "button" >
-          </form>
+      <% if current_user.role != "Użytkownik" && @book.copies.all?{ |copy| !copy.borrowed } %>
+        <form action="<%= show_path %>" method="post" data-turbo-method="delete" data-turbo-confirm="Czy jesteś pewien?">
+              <input type="hidden" name="_method" value="delete">
+              <input type="submit" value="Usuń książkę" class =  "button" >
+            </form>
       <% end %>
 
       <h1><b>Książka:</b></h1>

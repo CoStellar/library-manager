@@ -48,13 +48,13 @@ class BooksController < ApplicationController
   end
 
   def destroy
-    @book = Book.find(params[:id])
-    @book.copies.destroy_all
-    @book.reviews.destroy_all
-    @book.reservations.destroy_all
-    @book.destroy
-
-    redirect_to list_path, status: :see_other
+      @book = Book.find(params[:id])
+      @book.copies.destroy_all
+      @book.reviews.destroy_all
+      @book.reservations.destroy_all
+      @book.destroy
+  
+      redirect_to list_path, status: :see_other
   end
   
   private
