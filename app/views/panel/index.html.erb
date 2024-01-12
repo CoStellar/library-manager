@@ -43,6 +43,7 @@
         <h2 class="bold">Witaj <%= current_user.username %>!</h2>
           <% if current_user.approved == "true" %>
             <p>Zalogowałeś/aś się pomyślnie jako <%= current_user.role %>.</p><br/>
+            <%= link_to "Zmień dane konta", edit_user_registration_path(current_user.id), class: "button"%>
             <% if current_user.role != "Użytkownik" %>
               <p>Liczba zarejestrowanych użytkowników: <%= User.count %></p>
               <%= render "forms/approve_form", users: @users %>

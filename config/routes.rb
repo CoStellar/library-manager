@@ -12,12 +12,11 @@ Rails.application.routes.draw do
   get 'panel', to: 'panel#index' , as: 'panel'
 
   devise_for :users, controllers: { registrations: 'users/registrations' }
-
+  resource :users
 
   devise_scope :user do
     put "/users/:id/update_approval" => "users/registrations#update_approval", as: :update_approval
     put "/users/:id/update_disapproval" => "users/registrations#update_disapproval", as: :update_disapproval
-
   end
 
   resources :borrowings do
@@ -36,7 +35,6 @@ Rails.application.routes.draw do
       end
     end
   end
-
   resources :books do
     resources :copies
     member do
@@ -52,8 +50,6 @@ Rails.application.routes.draw do
 
   delete '/reviews/:id', to: 'reviews#destroy', as: 'cancel_review'
 
-
-  
   put '/return_book/:id', to: 'borrowings#return', as: :return_book
   get '/books' , to: 'books#index', as: 'list'
   get '/books/:id' , to: 'books#show', as: 'show'
