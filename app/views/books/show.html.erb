@@ -148,7 +148,9 @@
                     </td>
                     <td style="border-bottom: 1px solid black;">
                       <% if !copy.borrowed %>
-                          <%= link_to "Wypożycz", borrow_path(book_id: @book.id, copy_id: copy.id), class: "round-button" %>
+
+                          <%= link_to "Wypożycz", borrow_path(book_id: @book.id, copy_id: copy.id), data: { turbo: false }, class: "round-button" %>
+
                       <% end %>
                     </td>
                     <% if current_user.role != "Użytkownik" %> 
