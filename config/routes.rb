@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   get 'panel', to: 'panel#index' , as: 'panel'
 
   devise_for :users, controllers: { registrations: 'users/registrations' }
-  resource :users
+  resources :users
 
   devise_scope :user do
     put "/users/:id/update_approval" => "users/registrations#update_approval", as: :update_approval
@@ -26,7 +26,9 @@ Rails.application.routes.draw do
       patch 'update'
     end
   end
-  
+  namespace :admin do
+    resources :users, only: [:index, :edit, :update]
+  end
   namespace :users do
     resource :registrations, only: [:edit, :update] do
       member do

@@ -8,31 +8,49 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 User.create(
-  email: 'admin@example.com',
-  password: 'admin123',
-  username: 'admin',
-  first_name: 'Admin',
-  last_name: 'User',
+  email: 'admin@biblioteka.com',
+  password: 'Admin123',
+  username: 'Admin',
+  first_name: 'Użytkownik',
+  last_name: 'Admin',
   approved: true,
   role: 2  # Admin
 )
 
 User.create(
-  email: 'librarian@example.com',
-  password: 'librarian123',
-  username: 'librarian',
-  first_name: 'Librarian',
-  last_name: 'User',
+  email: 'bibliotekarz@biblioteka.com',
+  password: 'Bibliotekarz123',
+  username: 'Bibliotekarz',
+  first_name: 'Użytkownik',
+  last_name: 'Bibliotekarz',
   approved: true,
   role: 1  # Bibliotekarz
 )
 
 User.create(
-  email: 'regular_user@example.com',
-  password: 'user123',
-  username: 'user',
-  first_name: 'Regular',
-  last_name: 'User',
+  email: 'użytkownik@biblioteka.com',
+  password: 'Użytkownik123',
+  username: 'Użytkownik',
+  first_name: 'Użytkownik',
+  last_name: 'Zwyczajny',
   approved: true,
   role: 0  # Zwykły użytkownik
+)
+
+Book.create(
+  title: 'Pan Lodowego Ogrodu - księga I',
+  author: 'Jarosław Grzędowicz',
+  genre: 'fantasy',
+  isbn: '9788379644964',
+  description: 'Władza uzależnia, szczególnie w połączeniu z magią. Wyobraź sobie, że stałeś się bogiem – ktoś miałby cię tego stanu pozbawić?
+  Nie liczą się sentymenty, dobro wspólne, misja i przyjaźń.
+  Vuko Drakkainen samotnie rusza na ratunek ekspedycji naukowej badającej człekopodobną cywilizację planety Midgaard. Pod żadnym pozorem nie może ingerować w rozwój nieznanej kultury. Trafia na zły czas. Planeta powitała go mgłą i śmiercią. Dalej jest tylko gorzej. Trwa wojna bogów. Giną śmiertelnicy. Odwieczne reguły zostały złamane.
+  Księga pierwsza kultowego cyklu, która w jednym roku zgarnęła Zajdla, Nautilusa, Sfinksa i Śląkfę.'
+)
+Book.create(
+  title: 'Gra Endera',
+  author: 'Orson Scott Card',
+  genre: 'science fiction',
+  isbn: '9788378396321',
+  description: 'Wobec śmiertelnego zagrożenia nadciągającego z kosmosu Ziemia przygotowuje swoją broń ostatniej nadziei. Jest nią chłopiec, w którym odkryto zalążki niezwykłego geniuszu wojskowego. Czas nagli, a przyszłość dwóch cywilizacji spoczywa w rękach dziecka....'
 )
