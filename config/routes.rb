@@ -18,10 +18,11 @@ Rails.application.routes.draw do
     put "/users/:id/update_approval" => "users/registrations#update_approval", as: :update_approval
     put "/users/:id/update_disapproval" => "users/registrations#update_disapproval", as: :update_disapproval
   end
-
+  resources :borrowings, only: [:create, :destroy, :return_book, :update, :borrow]
   resources :borrowings do
     member do
-      put 'return_book' 
+      put 'return_book'
+
       patch 'extend_due_date'
       patch 'update'
     end
@@ -51,6 +52,7 @@ Rails.application.routes.draw do
   end
 
   delete '/reviews/:id', to: 'reviews#destroy', as: 'cancel_review'
+  delete '/borrowings/:id', to: 'borrowings#destroy', as: 'cancel_borrowing'
 
   put '/return_book/:id', to: 'borrowings#return', as: :return_book
   get '/books' , to: 'books#index', as: 'list'

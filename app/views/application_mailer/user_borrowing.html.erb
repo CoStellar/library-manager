@@ -8,8 +8,8 @@
 </head>
 <body>
 
-  <h1>Twoja rezerwacja z dnia <%= @reservation_date %> została zrealizowana.</h1>
-  <p>Wypożyczyłeś/aś książkę <%= @book.title %>.</p>
+    <h1>Twoje wypożyczenie z dnia <%= @borrowing.created_at.strftime('%d.%m.%Y') %> zostało anulowane.</h1>
+    <p>Chciałeś/aś wypożyczyć  <%= @book.title %>.</p>
   
 </body>
 </html>

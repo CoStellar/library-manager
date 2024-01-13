@@ -19,6 +19,20 @@ class BorrowingsController < ApplicationController
       @copy.book.check_reservations
       redirect_to return_path
   end
+  
+  def destroy
+    @borrowing = Borrowing.find(params[:id])
+    @copy = @borrowing.copy
+    if @borrowing
+      @copy.update(borrowed: false)
+      @borrowing.cancel_borrowing(@borrowing)
+      @borrowing.destroy
+      redirect_to return_path, notice: 'Wypożyczenie zostało anulowane'
+    else
+      redirect_to return_path, alert: 'Nie można znaleźć wypożyczenia o podanym ID.'
+    end
+  end
+
 
   def create
     if current_user.borrowings.where(returned: false).count >= 5
@@ -33,9 +47,8 @@ class BorrowingsController < ApplicationController
         redirect_to list_path, notice: 'Książka wypożyczona.'
       else
         render :new
+      end
     end
-  end
-
   end
 
   def update
@@ -47,7 +60,6 @@ class BorrowingsController < ApplicationController
       redirect_to list_path
     end
   end
-
 
 
   private
