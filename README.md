@@ -41,9 +41,7 @@ W widoku Panel Użytkownika użytkownicy mogą aktualizować informacje dotyczą
 W widoku Moje Wypożyczenia są wyświetlane wszystkie aktualne wypożyczenia wraz z informacjami dotyczącymi terminu zwrotu, naliczonych opłat i opcji przedłużenia. Dodatkowo wyświetlana jest historia wcześniej wypożyczonych i już zwróconych książek.
 W widoku Lista Książek użytkownicy widzą tytuły, autorów, gatunki i średnie oceny książek. Pasek wyszukiwania umożliwia znalezienie książek po tytule, autorze lub gatunku.
 Kliknięcie wybranej książki przenosi użytkownika do nowego widoku, gdzie podane są szczegółowe informacje dotyczące książki. Użytkownik ma również możliwość oceny książki, ale tylko wtedy, gdy co najmniej raz wypożyczył i zwrócił daną książkę. W przypadku zmiany oceny użytkownik może usunąć swoją ocenę i dodać nową. W drugiej części strony są wszystkie dostępne kopie danej książki. Jeśli kopia jest dostępna, użytkownik może ją wypożyczyć, klikając przycisk "Wypożycz". Następnie przenosi się do nowego widoku, w którym może wybrać datę zwrotu książki. Jeśli żadna z kopii danej książki nie jest dostępna, a użytkownik nie ma aktualnie wypożyczonej żadnej kopii, może zarezerwować książkę, klikając przycisk "Zarezerwuj książkę". Po kliknięciu przycisku użytkownik przechodzi do widoku Moje Rezerwacje.
-W widoku Moje Rezerwacje są wyświetlane wszystkie aktualne rezerwacje wraz z podstawowymi informacjami dotyczącymi danej rezerwacji. Użytkownik może anulować niezrealizowan
-
-ą rezerwację. Wyświetlane są również zrealizowane wcześniej rezerwacje.
+W widoku Moje Rezerwacje są wyświetlane wszystkie aktualne rezerwacje wraz z podstawowymi informacjami dotyczącymi danej rezerwacji. Użytkownik może anulować niezrealizowaną rezerwację. Wyświetlane są również zrealizowane wcześniej rezerwacje.
 W prawym górnym rogu strony użytkownik może się wylogować z dowolnego widoku.
 
 ### Bibliotekarz
