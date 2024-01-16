@@ -3,7 +3,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   before_action :authorize_admin_for_update_actions, only: [:edit, :update, :update_approval]
   before_action :configure_account_update_params, only: [:update]
   helper UsersHelper
-
+  # ...
   def configure_sign_up_params
     devise_parameter_sanitizer.permit(:sign_up, keys: [:username, :first_name, :last_name, :role])
   end
@@ -22,6 +22,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     @user = current_user
     super
   end
+
 
   def update_approval
     @user = User.find(params[:id])
