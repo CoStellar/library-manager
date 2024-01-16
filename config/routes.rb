@@ -2,8 +2,8 @@
 
 Rails.application.routes.draw do
   root 'main#index'
-
   get 'panel', to: 'panel#index', as: 'panel'
+  get '/api', to: redirect('/swagger/dist/index.html?url=/apidocs/api-docs.json')
 
   devise_for :users, controllers: { registrations: 'users/registrations' }
   resources :users do

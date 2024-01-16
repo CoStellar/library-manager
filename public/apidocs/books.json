@@ -1,0 +1,268 @@
+{
+  "apiVersion": "1.0",
+  "swaggerVersion": "1.2",
+  "basePath": "http://localhost:3000",
+  "resourcePath": "books",
+  "apis": [
+    {
+      "path": "/books",
+      "operations": [
+        {
+          "summary": "List all books",
+          "notes": "Returns a list of all books",
+          "nickname": "Books#index",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/books",
+      "operations": [
+        {
+          "summary": "Create a new book",
+          "parameters": [
+            {
+              "paramType": "form",
+              "name": "title",
+              "type": "string",
+              "description": "Title",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "author",
+              "type": "string",
+              "description": "Author",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "genre",
+              "type": "string",
+              "description": "Genre",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "isbn",
+              "type": "string",
+              "description": "ISBN",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "description",
+              "type": "string",
+              "description": "Description",
+              "required": false
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 200,
+              "responseModel": "Book",
+              "message": "Success"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Invalid request"
+            }
+          ],
+          "nickname": "Books#create",
+          "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/books/new",
+      "operations": [
+        {
+          "summary": "New book form",
+          "notes": "Returns a new book object for creating a new book",
+          "nickname": "Books#new",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/books/{id}/edit",
+      "operations": [
+        {
+          "summary": "Edit book form",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Book ID",
+              "required": true
+            }
+          ],
+          "nickname": "Books#edit",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/books/{id}",
+      "operations": [
+        {
+          "summary": "Show book details",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Book ID",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 200,
+              "responseModel": "Book",
+              "message": "Success"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Book not found"
+            }
+          ],
+          "nickname": "Books#show",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/books/{id}",
+      "operations": [
+        {
+          "summary": "Update a book",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Book ID",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "title",
+              "type": "string",
+              "description": "Title",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "author",
+              "type": "string",
+              "description": "Author",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "genre",
+              "type": "string",
+              "description": "Genre",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "isbn",
+              "type": "string",
+              "description": "ISBN",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "description",
+              "type": "string",
+              "description": "Description",
+              "required": false
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 200,
+              "responseModel": "Book",
+              "message": "Success"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Invalid request"
+            }
+          ],
+          "nickname": "Books#update",
+          "method": "patch"
+        }
+      ]
+    },
+    {
+      "path": "/books/{id}",
+      "operations": [
+        {
+          "summary": "Delete a book",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Book ID",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 303,
+              "responseModel": null,
+              "message": "Redirect to book list"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Book not found"
+            }
+          ],
+          "nickname": "Books#destroy",
+          "method": "delete"
+        }
+      ]
+    },
+    {
+      "path": "/search",
+      "operations": [
+        {
+          "summary": "Search for books",
+          "parameters": [
+            {
+              "paramType": "query",
+              "name": "search",
+              "type": "string",
+              "description": "Search term",
+              "required": false
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 200,
+              "responseModel": "Book",
+              "message": "Success"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Invalid request"
+            }
+          ],
+          "nickname": "Books#search",
+          "method": "get"
+        }
+      ]
+    }
+  ],
+  "authorizations": null
+}

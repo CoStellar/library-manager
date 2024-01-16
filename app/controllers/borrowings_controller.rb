@@ -1,5 +1,62 @@
 class BorrowingsController < ApplicationController
   before_action :set_users_and_borrowed_books, only: [:return]
+  respond_to :json
+  include Swagger::Docs::Methods
+
+  swagger_controller :borrowings, 'Borrowings Management'
+
+  swagger_api :index do
+    summary 'List all borrowings'
+    notes 'Get a list of all borrowings'
+    param :query, :page, :integer, :optional, 'Page number'
+    param :query, :per_page, :integer, :optional, 'Number of items per page'
+    response :unauthorized
+    response :not_acceptable
+  end
+
+  swagger_api :borrow do
+    summary 'Borrow a book'
+    notes 'Borrow a copy of a book'
+    param :path, :book_id, :integer, :required, 'ID of the book'
+    param :path, :copy_id, :integer, :required, 'ID of the copy'
+    response :unauthorized
+    response :not_acceptable
+  end
+
+  swagger_api :return_book do
+    summary 'Return a borrowed book'
+    notes 'Return a borrowed copy of a book'
+    param :path, :copy_id, :integer, :required, 'ID of the copy'
+    response :unauthorized
+    response :not_acceptable
+  end
+
+  swagger_api :destroy do
+    summary 'Delete a borrowing'
+    notes 'Delete a borrowing record'
+    param :path, :id, :integer, :required, 'ID of the borrowing'
+    response :unauthorized
+    response :not_acceptable
+  end
+  swagger_api :create do
+    summary 'Create a new borrowing'
+    notes 'Create a new borrowing record'
+    param :form, 'borrowing[copy_id]', :integer, :required, 'ID of the copy'
+    param :form, 'borrowing[borrow_date]', :date, :required, 'Borrow date'
+    param :form, 'borrowing[due_date]', :date, :required, 'Due date'
+    response :unauthorized
+    response :not_acceptable
+  end
+
+  swagger_api :update do
+    summary 'Update a borrowing'
+    notes 'Update a borrowing record'
+    param :path, :id, :integer, :required, 'ID of the borrowing'
+    param :form, 'borrowing[due_date]', :date, :required, 'Due date'
+    param :form, 'borrowing[renewal_request]', :boolean, :optional, 'Renewal request status'
+    response :unauthorized
+    response :not_acceptable
+  end
 
   def borrow
     @book = Book.find(params[:book_id])

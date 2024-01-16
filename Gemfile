@@ -81,5 +81,5 @@ end
 
 gem "devise", "~> 4.9"
 
-
+gem 'swagger-docs'
 gem 'rails-erd'
