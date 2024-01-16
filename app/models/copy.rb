@@ -9,8 +9,7 @@ class Copy < ApplicationRecord
   private
 
   def generate_id
-    last_copy = Copy.where(book_id: book_id).order(id: :desc).limit(1).first
-
+    last_copy = Copy.where(book_id: book_id).order(id: :desc).limit(1).first 
     # Automatycznie inkrementujemy ostatnie cztery cyfry
     self.id = "#{book.isbn.gsub(/\D/, '')}#{format('%04d', last_copy ? last_copy.id.to_i % 10000 + 1 : 1)}"
   end
