@@ -17,7 +17,6 @@ User.create(
   approved: true,
   role: 2  # Admin
 )
-
 User.create(
   email: 'bibliotekarz@biblioteka.com',
   password: 'Bibliotekarz123',
@@ -27,7 +26,6 @@ User.create(
   approved: true,
   role: 1  # Bibliotekarz
 )
-
 User.create(
   email: 'uzytkownik@biblioteka.com',
   password: 'Użytkownik123',
