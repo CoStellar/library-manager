@@ -28,6 +28,7 @@ class BorrowingsController < ApplicationController
       @borrowing.cancel_borrowing(@borrowing)
       @borrowing.destroy
       redirect_to return_path, notice: 'Wypożyczenie zostało anulowane'
+      @copy.book.check_reservations
     else
       redirect_to return_path, alert: 'Nie można znaleźć wypożyczenia o podanym ID.'
     end
