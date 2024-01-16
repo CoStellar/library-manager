@@ -53,6 +53,11 @@
                 <br>
                 Zwrócona: <%= borrowing.returned ? 'Tak' : 'Nie' %>
                 <br>
+                <% if (borrowing.due_date - Date.today).to_i > 0 %>
+                        Dni pozostałe: <%= (borrowing.due_date - Date.today).to_i %>
+                      <% else %>
+                        Należność za zwłokę z oddaniem: <%= (borrowing.due_date - Date.today).to_i * 10 *(-1) %> PLN.
+                      <% end %>
                 <% if borrowing.due_date > Date.today %>
                   <% if !borrowing.returned && !borrowing.renewal_request? %>
                     <%= form_with(model: [@book, @copy, borrowing], local: true) do |form| %>
