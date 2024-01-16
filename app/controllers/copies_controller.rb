@@ -8,9 +8,9 @@ class CopiesController < ApplicationController
 
 
   def destroy
-    @copy = Copy.find(params[:id]) 
-    @book = @copy.book 
-    @copy.destroy 
+    @copy = Copy.find(params[:id]) # Znajdź konkretną kopię po ID
+    @book = @copy.book # Pobierz książkę związana z tą kopią
+    @copy.destroy # Usuń tylko tę jedną kopię
 
     redirect_to show_path(@book), status: :see_other
   end
