@@ -26,17 +26,25 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def update_approval
     @user = User.find(params[:id])
     if @user.update(approved: true)
-      redirect_to root_path, notice: 'Profil został zatwierdzony.'
+      redirect_to panel_path, notice: 'Profil został zatwierdzony.'
     else
       flash[:alert] = 'Wystąpił błąd podczas zatwierdzania profilu.'
     end
   end
   def update_disapproval
     @user = User.find(params[:id])
-    if @user.destroy
-      redirect_to root_path, notice: 'Profil został usunięty.'
+    if @user.borrowings.exists?(returned: false)
+      flash[:alert] = 'Nie można usunąć profilu, użytkownik posiada nieoddane książki.'
+      redirect_to panel_path
     else
-      flash[:alert] = 'Wystąpił błąd podczas usuwania profilu.'
+      @user.borrowings.destroy_all
+      @user.reservations.destroy_all
+      @user.reviews.destroy_all
+      if @user.destroy
+        redirect_to panel_path, notice: 'Profil został usunięty.'
+      else
+        flash[:alert] = 'Wystąpił błąd podczas usuwania profilu.'
+      end
     end
   end
 

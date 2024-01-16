@@ -36,7 +36,7 @@ module UsersHelper
       form_for(user, url: update_disapproval_path(user), method: :put, data: { turbo_stream_target: "user_#{user.id}" }) do |f|
         content_tag(:div) do
           concat f.hidden_field(:authenticity_token, value: form_authenticity_token)
-          concat f.submit('Usuń profil', class: button_class, data: { turbo_stream_frame: 'reload', confirm: 'Czy na pewno chcesz usunąć ten profil?' })
+          concat f.submit('Usuń profil', class: button_class, data: { turbo_stream_frame: 'reload', turbo_confirm: 'Czy na pewno chcesz usunąć ten profil?' })
         end
       end
     end
