@@ -21,7 +21,9 @@ class Book < ApplicationRecord # rubocop:disable Style/Documentation
           reserved_copy.update(borrowed: true)
           Borrowing.create(copy_id: reserved_copy.id, user_id: reservations.first.user_id, borrow_date: Date.today, due_date: Date.today + 14.days, returned: false, renewal_request: false)
           reservations.first.update(reservation_completed: true)
+        
 
+      
           reservation_user = User.find(reservations.first.user_id) if reservations.first.present?
           reserved_book = Book.find(reserved_copy.book_id) if reserved_copy.present?
           reservation_date = reservations.first.reservation_date if reservations.first.present?
@@ -31,7 +33,9 @@ class Book < ApplicationRecord # rubocop:disable Style/Documentation
 
           reservations.first.update(notification_sent: true)
           end
+         
         end
+      
       end
     end
   end

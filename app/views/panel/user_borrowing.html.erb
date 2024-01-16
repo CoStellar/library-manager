@@ -65,7 +65,7 @@
                       <%= form.label :due_date, "Nowa data zwrotu" %>
                       <%= form.date_field :due_date, required: true, min: borrowing.due_date + 1.day, max: (borrowing.due_date + 14.days), value: borrowing.due_date + 1.day, id: 'due_date' %>
                       <div>
-                        <%= form.submit "Przedłuż wypożyczenie", data: { turbo_stream_frame: 'reload', turbo_confirm: 'Czy na pewno chcesz przedłużyć wypożyczenie?'}, class: "button margin-top" %>
+                        <%= form.submit "Przedłuż wypożyczenie", data: { turbo_stream_frame: 'reload', turbo_confirm: 'Czy na pewno chcesz przedłużyć wypożyczenie?' }%>
                       </div><br/> 
                     <% end %>
                   <% end %>

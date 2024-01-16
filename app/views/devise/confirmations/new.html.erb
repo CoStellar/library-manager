@@ -24,9 +24,12 @@
     <% end %>
   </div>
 </div>
+
+
 <div class="content" style="max-width:2000px;margin-top:46px">
   <div class="container content padding-large" style="max-width:800px">
     <h2>Ponownie wyślij instrukcje odzyskiwania</h2>
+
     <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
       <%= render "devise/shared/error_messages", resource: resource %>
 
